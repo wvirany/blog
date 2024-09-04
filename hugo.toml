@@ -11,7 +11,7 @@ googleAnalytics = "G-xxxxxxxxx"
 
 [params]
 # Meta description
-description = "Walter Virany's Blog"
+description = "Blog - Walter Virany"
 
 # Appearance settings
 theme = 'light'
