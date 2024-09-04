@@ -174,7 +174,7 @@ where $\Sigma$ denotes the covariance matrix of the input-to-hidden layer weight
 In this section, I produce some empirical results to help visualize and understand the NNGP. 
 
 
-![fig:bivariate_distributions](../../images/nngp/bivariate_distributions.png)
+![fig:bivariate_distributions](figures/bivariate_distributions.png)
 
 
 #### References
