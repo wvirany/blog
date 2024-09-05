@@ -152,7 +152,7 @@ The covariance function of the corresponding GP at each layer is defined recursi
 #### Comments on the Covariance Function
 
 
-As was previously alluded to the computation of the covariance function is often difficult to evaluate, and depends on the specific architecture and choice of activation functions in the neural network. Computin the covariance function involves integrating over the distributions of the weights and biases for each pair of training samples. For many architectures, this requires sophisticated numerical integration techniques, and is often not practical from a computational perspective. Furthermore, this becomes increasingly challenging with larger datasets.
+As was previously alluded to the computation of the covariance function is often difficult to evaluate, and depends on the specific architecture and choice of activation functions in the neural network. Computing the covariance function involves integrating over the distributions of the weights and biases for each pair of training samples. For many architectures, this requires sophisticated numerical integration techniques, and is often not practical from a computational perspective. Furthermore, this becomes increasingly challenging with larger datasets.
 
 However, in the case of a single hidden layer, certain choices of activation functions do yield analytic covariance functions. \cite{williams1996computing} gives on such example; the "error function", defined by
 
