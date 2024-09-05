@@ -154,7 +154,7 @@ The covariance function of the corresponding GP at each layer is defined recursi
 
 As was previously alluded to the computation of the covariance function is often difficult to evaluate, and depends on the specific architecture and choice of activation functions in the neural network. Computing the covariance function involves integrating over the distributions of the weights and biases for each pair of training samples. For many architectures, this requires sophisticated numerical integration techniques, and is often not practical from a computational perspective. Furthermore, this becomes increasingly challenging with larger datasets.
 
-However, in the case of a single hidden layer, certain choices of activation functions do yield analytic covariance functions. \cite{williams1996computing} gives on such example; the "error function", defined by
+However, in the case of a single hidden layer, certain choices of activation functions do yield analytic covariance functions. \cite{williams1996computing} gives such an example; the "error function", defined by
 
 $$
 \text{erf } x = \frac{2}{\sqrt{\pi}} \int_0^x e^{-t^2}dt.
@@ -171,10 +171,17 @@ where $\Sigma$ denotes the covariance matrix of the input-to-hidden layer weight
 
 #### Experiments
 
-In this section, I produce some empirical results to help visualize and understand the NNGP. 
+In this section, I produce some empirical results to help visualize and understand the NNGP.
+
+The following figure shows the distribution over network priors for an increasing number of hidden units (network priors being the function represented by the network at initialization, before training). It can be seen that as the size of the hidden layer increases, the distribution converges to a bivariate Normal distribution.
 
 
-![fig:bivariate_distributions](figures/bivariate_distributions.png)
+
+<figure>
+  <img src="figures/bivariate_distributions.png" alt="Bivariate Distributions" style="width:100%">
+  <figcaption>Figure 1: Convergence of priors to Gaussian processes for single-input networks</figcaption>
+</figure>
+
 
 
 #### References
