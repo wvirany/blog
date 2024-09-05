@@ -19,6 +19,7 @@ function push_public {
 
 function all {
     push_public
+    cd ..
     push_blog
 }
 
