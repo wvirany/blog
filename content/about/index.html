@@ -1,0 +1,95 @@
++++
+title = ''
+draft = false
++++
+
+
+<style>
+
+.card {
+  box-shadow: 2px 2px 0 0 rgb(103, 102, 102);
+  transition: 0.3s;
+  border-radius: 5px; /* 5px rounded corners */
+  background-color: #212529;/*rgba(82, 81, 81, 0.4);*/
+}
+
+/* Add rounded corners to the top left and the top right corner of the image */
+img {
+  border-radius: 5px 5px 5px 5px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgb(191, 191, 191);
+}
+
+.container {
+  padding: 2px 16px;
+  height: 120px;
+}
+
+.tag-cloud {
+  display: inline-block;
+  color: lightgray;
+  padding: 8px 20px;
+  border-radius: 25px;
+  background-color: rgba(13, 13, 13, 0.2);
+  margin-top: 8px;
+  max-width:33%;
+  font-size: .7vw;
+}
+
+.column {
+  float: left;
+  width: 33%;
+  padding:0 5px 0 0; /* Only right padding*/
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="content">
+
+<p>
+  <img src="profile.JPG" alt="Profile" style="float:right; width:20%">
+    I recently graduated from the University of Colorado with a B.S. in applied mathematics as well as minors in computer science and physics.
+    Broadly speaking, I am interested in machine learning, statistics, and optimization, typically with applications to biology.
+</p>
+
+<!-- {{ partial "socials.html" . }} -->
+
+<h2>News</h2>
+
+<p>
+  <div style="float:left; font-weight:500">Sept 3, 2024</div>
+  <div style="float:right">Starting a research internship at <a href="https://mila.quebec/en"> Mila </a> with <a href="https://jian-tang.com/"> Prof. Jian Tang </a></div>
+</p>
+
+<br>
+
+<p>
+  <div style="float:left; font-weight:500">June 23, 2024</div>
+  <div style="float:right">Participating in <a href="https://www.ipam.ucla.edu/programs/student-research-programs/research-in-industrial-projects-for-students-rips-2024-los-angeles/">RIPS</a> at IPAM in Los Angeles for Summer 2024</div>
+</p>
+
+<br>
+
+<p>
+  <div style="float:left; font-weight:500">May 9, 2024</div>
+  <div style="float:right">Graduated from CU Boulder!</div>
+</p>
+
+<br>
+
+<p>
+<div style="float:left; font-weight:500">Nov 16, 2023</div>
+<div style="float:right">Presented a <a href="/talks/building_neural_net">talk</a> to the CU Applied Math department</div>
+</p>
+
+<br> 
+
+</div>
+</body>
+</html> 
