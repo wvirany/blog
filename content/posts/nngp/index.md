@@ -13,15 +13,22 @@ showTags: false
 hideBackToTop: false
 ---
 
-Despite their overwhelming success in modern machine learning, deep neural networks remain poorly understood from a theoretical perspective. Classical statistical wisdom dictates that overparameterized models (i.e., models with more degrees of freedom than data samples) should overfit noisy data and thus generalize poorly. Yet, even in cases in which deep neural networks fit noisy training data almost perfectly, they still exhibit good generalizability. This contradiction has highlighted a serious gap between the theory and practice of deep learning, motivating the need for a more complete theoretical framework for deep learning.
+Despite their overwhelming success in modern machine learning, deep neural networks remain poorly understood from a theoretical perspective. Classical statistical wisdom dictates that overparameterized models (i.e., models with more degrees of freedom than data samples) should overfit noisy data and thus generalize poorly. Yet, even in cases in which deep neural networks fit noisy training data almost perfectly, they still exhibit good generalizability. This contradiction has highlighted a serious gap between the theory and practice of deep learning, motivating the need for a more complete theoretical framework.
 
-An interesting result in the theoretical study of deep learning is the Neural Network Gaussian Process (NNGP), which shows the equivalence between neural networks and Gaussian processes (GPs). Indeed, \cite{neal1996priors} first showed that the distribution over functions represented by neural networks with a single hidden layer converges to a GP in the limit as the number of hidden units is taken to infinity[^fn1]. More recently, \cite{lee2018deep} extended this work to the case of arbitrary depth.
+An interesting result in the theoretical study of deep learning is the Neural Network Gaussian Process (NNGP), which shows the equivalence between neural networks and Gaussian processes (GPs). Indeed, \cite{neal1996priors} first showed that the prior distribution of functions represented by neural networks with a single hidden layer converges to a GP in the limit as the number of hidden units is taken to infinity[^fn1]. More recently, \cite{lee2018deep} extended this work to the case of deep neural networks.
 
-In this blog, I briefly explain some of the background mathematics necessary in the development of the NNGP. Then, I show that an infinitely wide neural network of any depth is Gaussian process. Previous
+In this blog post, I explain the NNGP, reviewing both the work of \cite{neal1996priors} and \cite{lee2018deep}. I aim to clarify the mathematical argumments which lead to their results in a detailed and step-by-step fashion. Then, I show some coding experiments which further support the results.
 
-I aim to clarify mathematical arguments by detailing a thorough notation.
+### Gaussian Processes
 
-#### Notation
+Informally, a GP is defined as a collection of random variables such that any finite collection of which take a multivariate Normal distribution. GPs can be thought of as an infinite-dimensional generalization of the multivariate Normal distribution, i.e., it is a distribution over functions with a continuous domain.
+
+In machine learning, most supervised learning techniques take a parametric modeling approach, in which the task is to estimate the parameters of a function class given observations from the distribution[^fn2]&nbsp;. GPs, on the other hand, take a non-parametric Bayesian approach, in which minimal assumptions are made about the underlying distribution of data. This permits a more flexible approach for characterizing said distribution, whether it be by regression, clustering, or otherwise.
+
+For a more thorough explanation of GPs, I highly recommend [this blog post](https://distill.pub/2019/visual-exploration-gaussian-processes/).
+
+
+### Notation
 
 Consider an $L$-Layer neural network, with each layer $l$ consisting of $n_l$ hidden units. Let $\mathbf{x} = (x_1, \dots, x_{n_0})$ denote the input of the network. Then, the forward pass is defined by the following series of computations:
 
@@ -49,15 +56,15 @@ Finally, if a function $f(x)$ is a GP with mean function $m(x)$ and covariance f
 
 
 
-#### Single-Layer Neural Networks as Gaussian Processes
+### Single-Layer Neural Networks as Gaussian Processes
 
-First, we assume the weight and bias parameters are drawn i.i.d. from a Normal distribution with $\mu_b = \mu_w = 0, \sigma_b^2 = 1$, and $\sigma_w^2 = 1/n_l$. Following the notation previously introduced, we begin with the computation of the pre-activation units in the first layer:
+First, we assume the weight and bias parameters are drawn i.i.d. from a Normal distribution with $\mu_b = \mu_w = 0, \sigma_b^2 = 1$, and $\sigma_w^2 = 1/n_l$[^fn3]&nbsp;. Following the notation previously introduced, we begin with the computation of the pre-activation units in the first layer:
 
 $$
 Z_j^{(1)} = b_j^{(0)} + \sum_{i=1}^{n_0}w_{ji}^{(0)}x_i.
 $$
 
-Since each $w_{ji}, b_j$ is i.i.d. Normal, then $Z_j^{(1)}$ is i.i.d. Normal[^fn2]&nbsp;with mean
+Since each $w_{ji}, b_j$ is i.i.d. Normal, then $Z_j^{(1)}$ is i.i.d. Normal[^fn4]&nbsp;with mean
 
 $$
 \begin{align*}
@@ -94,7 +101,7 @@ $$
 f(\mathbf{x}) = b^{(1)} + \sum_{i=1}^{n_1} w_i^{(1)} \\, A_i^{(1)},
 $$
 
-and since each $A_i^{(1)}$ is i.i.d., then it follows from the Central Limit Theorem (CLT) that $f(\mathbf{x})$ takes a Normal distribution in the limit as $n_1 \to \infty$. Thus, for any finite set of inputs **x**, $f(\mathbf{x})$ will follow a multivariate Normal distribution; this is precisely the definition of a Gaussian process. It follows that
+and since each $A_i^{(1)}$ is i.i.d., then it follows from the Central Limit Theorem (CLT) that $f(\mathbf{x})$ takes a Normal distribution in the limit as $n_1 \to \infty$. Thus, for any finite set of inputs **x**, $f(\mathbf{x})$ will follow a multivariate Normal distribution; this is precisely the definition of a Gaussian process! It follows that
 
 $$
 f(\mathbf{x}) \sim \mathcal{GP}(m, k),
@@ -120,10 +127,10 @@ $$
 where I have introduced the covariance function $C(\mathbf{x}, \mathbf{x}^\prime)$ as in \cite{neal1996priors}. This covariance function is often difficult to compute, and depends on the specified activation function. See [Comments on the Covariance Function](#comments-on-the-covariance-function) for further discussion.
 
 
-#### Deep Neural Networks as Gaussian Processes
+### Deep Neural Networks as Gaussian Processes
 
 
-The case for neural networks with arbitrary depth can be extended via an argument of mathematical induction. First, the base case follows from the previous section. Then, we assume that $Z_j^{(l)} \sim \mathcal{GP}(0, k^{(l)})$[^fn3] , and that each $Z_j^{(l)}$ are i.i.d. Hence, each $A_j^{(l)}$ are i.i.d. as well. Then, we can compute
+The case for neural networks with arbitrary depth can be extended via an argument of mathematical induction. First, the base case follows from the previous section. Then, we assume that $Z_j^{(l)} \sim \mathcal{GP}(0, k^{(l)})$[^fn5] , and that each $Z_j^{(l)}$ are i.i.d. Hence, each $A_j^{(l)}$ are i.i.d. as well. Then, we can compute
 
 $$
 Z_j^{(l+1)} = b_j^{l} + \sum_{i=1}^{n_l}w_{ji}^{(l)}A_j^{(l)}.
@@ -149,7 +156,7 @@ $$
 The covariance function of the corresponding GP at each layer is defined recursively, and I restrict discussion of the covariance function to the single-layer case. This is addressed in the following section.
 
 
-#### Comments on the Covariance Function
+### Comments on the Covariance Function
 
 
 As was previously alluded to the computation of the covariance function is often difficult to evaluate, and depends on the specific architecture and choice of activation functions in the neural network. Computing the covariance function involves integrating over the distributions of the weights and biases for each pair of training samples. For many architectures, this requires sophisticated numerical integration techniques, and is often not practical from a computational perspective. Furthermore, this becomes increasingly challenging with larger datasets.
@@ -169,27 +176,36 @@ $$
 where $\Sigma$ denotes the covariance matrix of the input-to-hidden layer weights (\cite{williams1996computing}). Note that this covariance function is not stationary, i.e., it is not translation invariant, which is often a nice property in kernel functions for GP regression.
 
 
-#### Experiments
+### Experiments
 
-In this section, I produce some empirical results to help visualize and understand the NNGP.
-
-The following figure shows the distribution over network priors for an increasing number of hidden units (network priors being the function represented by the network at initialization, before training). It can be seen that as the size of the hidden layer increases, the distribution converges to a bivariate Normal distribution.
-
-
+Figure 1 shows the distribution over network priors for an increasing number of hidden units (network priors being the function represented by the network at initialization, before training). Each point represents a neural network prior (i.e., no training) with a single hidden layer, a single input, and a single output, with 1, 3, and 10 tanh hidden units, respectively from left to right. The parameters were drawn from a Normal distribution with $\sigma_b^{(0)} = \sigma_w^{(0)} =5$, $\sigma_b^{(1)} = 0.1$, and $\sigma_w^{(1)} = 1/\sqrt{N}$, where $N$ is the number of units in the hidden layer. The horizontal axis is the output of the network when the input is -0.2; the vertical axis is the output of the network when the input is 0.4.
 
 <figure>
   <img src="figures/bivariate_distributions.png" alt="Bivariate Distributions" style="width:100%">
-  <figcaption>Figure 1: Convergence of priors to Gaussian processes for single-input networks</figcaption>
+  <figcaption>Figure 1: Convergence of priors to Gaussian processes for single-input networks. Results reproduced from \cite{neal1996priors}.</figcaption>
 </figure>
 
+Recalling the definition of a GP, if $f \sim \mathcal{GP}$, then $f(-0.2)$ and $f(0.4)$ take a joint bivariate Normal distribution. It can be seen that as the size of the hidden layer increases, the distribution of priors converges to a bivariate Normal distribution.
 
 
-#### References
+
+All of the code used to make these plots can be found at [github.com/wvirany/NNGP](https://github.com/wvirany/NNGP).
+
+
+
+### Conclusion
+
+
+
+
+### References
 
 1. [Visual exploration of Gaussian Processes](https://distill.pub/2019/visual-exploration-gaussian-processes/)
 2. [Some math behind the NTK](https://lilianweng.github.io/posts/2022-09-08-ntk/)
 
 
-[^fn1]: This could benefit from more explanation of what is meant by "distribution of functions represented by NNs...
-[^fn2]: This follows from the fact that the linear combination of i.i.d. Normal random variables is itself i.i.d. Normal.
-[^fn3]: Note that the covariance function of the GP for the units in each layer depends on the activation functions in all the previous layers.
+[^fn1]: Here, "the prior distribution of functions represented by neural networks" refers to the fact that a neural network represents a function, and at initialization, the parameters which characterize that function are each drawn from a distribution. Hence, the function itself is drawn from a joint distribution of all its parameters.
+[^fn2]: For example, this correspondings to solving the least squares regression problem, which gives the intercept and slope parameters of the line which best fits some set of observations.
+[^fn3]: As we will see later, it is necessary to define the variance of the weight parameters as $\sigma_w^2 = 1/n_l$ so that when we take the number of hidden units to infinity, the sum over all these units will converge.
+[^fn4]: This follows from the fact that the affine transformation of i.i.d. Normal random variables is itself i.i.d. Normal.
+[^fn5]: Note that the covariance function of the GP for the units in each layer depends on the activation functions in all the previous layers.
