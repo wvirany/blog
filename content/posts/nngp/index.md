@@ -8,8 +8,8 @@ toc: false
 readTime: true  
 autonumber: false  
 math: true  
-tags: ["math", "theory"]
-showTags: true  
+tags: []
+showTags: false  
 hideBackToTop: false
 ---
 
