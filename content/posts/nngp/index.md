@@ -17,7 +17,7 @@ Despite their overwhelming success in modern machine learning, deep neural netwo
 
 An interesting result in the theoretical study of deep learning is the Neural Network Gaussian Process (NNGP), which shows the equivalence between neural networks and Gaussian processes (GPs). Indeed, \cite{neal1996priors} first showed that the prior distribution of functions represented by neural networks with a single hidden layer converges to a GP in the limit as the number of hidden units is taken to infinity[^fn1]. More recently, \cite{lee2018deep} extended this work to the case of deep neural networks.
 
-In this blog post, I explain the NNGP, reviewing both the work of \cite{neal1996priors} and \cite{lee2018deep}. I aim to clarify the mathematical argumments which lead to their results in a detailed and step-by-step fashion. Then, I show some coding experiments which further support the results.
+In this blog post, I explain the NNGP, reviewing both the work of \cite{neal1996priors} and \cite{lee2018deep}. I aim to clarify the mathematical argumments which lead to their results in a detailed and step-by-step fashion. Then, I show some empirical results which further exemplify the NNGP.
 
 ### Gaussian Processes
 
@@ -181,13 +181,20 @@ where $\Sigma$ denotes the covariance matrix of the input-to-hidden layer weight
 Figure 1 shows the distribution over network priors for an increasing number of hidden units (network priors being the function represented by the network at initialization, before training). Each point represents a neural network prior (i.e., no training) with a single hidden layer, a single input, and a single output, with 1, 3, and 10 tanh hidden units, respectively from left to right. The parameters were drawn from a Normal distribution with $\sigma_b^{(0)} = \sigma_w^{(0)} =5$, $\sigma_b^{(1)} = 0.1$, and $\sigma_w^{(1)} = 1/\sqrt{N}$, where $N$ is the number of units in the hidden layer. The horizontal axis is the output of the network when the input is -0.2; the vertical axis is the output of the network when the input is 0.4.
 
 <figure>
-  <img src="figures/bivariate_distributions.png" alt="Bivariate Distributions" style="width:100%">
+  <img src="figures/bivariate_distributions.png" alt="Bivariate Distributions" style="width:100%; ">
   <figcaption>Figure 1: Convergence of priors to Gaussian processes for single-input networks. Results reproduced from \cite{neal1996priors}.</figcaption>
 </figure>
 
 Recalling the definition of a GP, if $f \sim \mathcal{GP}$, then $f(-0.2)$ and $f(0.4)$ take a joint bivariate Normal distribution. It can be seen that as the size of the hidden layer increases, the distribution of priors converges to a bivariate Normal distribution.
 
+Figure 2 shows the training process of an ensemble of 50 neural networks. Each pink line represents a single neural network in the ensemble, and the dark red line shows the mean of the ensemble. The shaded blue region shows an interval of two standard deviations about the mean.
 
+<figure>
+  <img src="figures/nn_ensemble.gif" alt="NN Ensemble" style="width:100%">
+  <figcaption>Figure 2: Ensemble of neural networks is a Gaussian process</figcaption>
+</figure>
+
+At initialization, the ensemble is a zero-mean Gaussian process. 
 
 All of the code used to make these plots can be found at [github.com/wvirany/NNGP](https://github.com/wvirany/NNGP).
 
@@ -205,7 +212,7 @@ All of the code used to make these plots can be found at [github.com/wvirany/NNG
 
 
 [^fn1]: Here, "the prior distribution of functions represented by neural networks" refers to the fact that a neural network represents a function, and at initialization, the parameters which characterize that function are each drawn from a distribution. Hence, the function itself is drawn from a joint distribution of all its parameters.
-[^fn2]: For example, this correspondings to solving the least squares regression problem, which gives the intercept and slope parameters of the line which best fits some set of observations.
+[^fn2]: For example, this correspondings to solving the least squares regression problem, in which the function class consists of all affine functions, and the parameters are the slope and intercept of the line which best fits some set of observations.
 [^fn3]: As we will see later, it is necessary to define the variance of the weight parameters as $\sigma_w^2 = 1/n_l$ so that when we take the number of hidden units to infinity, the sum over all these units will converge.
 [^fn4]: This follows from the fact that the affine transformation of i.i.d. Normal random variables is itself i.i.d. Normal.
 [^fn5]: Note that the covariance function of the GP for the units in each layer depends on the activation functions in all the previous layers.
