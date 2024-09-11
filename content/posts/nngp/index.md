@@ -187,21 +187,16 @@ where $\Sigma$ denotes the covariance matrix of the input-to-hidden layer weight
 
 Recalling the definition of a GP, if $f \sim \mathcal{GP}$, then $f(-0.2)$ and $f(0.4)$ take a joint bivariate Normal distribution. It can be seen that as the size of the hidden layer increases, the distribution of priors converges to a bivariate Normal distribution.
 
-<a href="#fig2">Figure 2</a> shows the training process of an ensemble of 50 neural networks. Each pink line represents a single neural network in the ensemble, and the dark red line shows the mean of the ensemble. The shaded blue region shows an interval of two standard deviations about the mean.
+<a href="#fig2">Figure 2</a> shows the training process of an ensemble of 50 neural networks. Each pink line represents a single neural network in the ensemble, and the dark red line shows the mean of the ensemble. The shaded blue region displays the interval of two standard deviations about the mean.
 
 <div id="fig2" class="figure">
    <img src="figures/nn_ensemble.gif" alt="NN Ensemble" style="width:100%">
   <figcaption>Figure 2: Ensemble of neural networks as a Gaussian process</figcaption>
 </div>
 
-At initialization, the ensemble is a zero-mean Gaussian process. 
+At initialization, the ensemble is a zero-mean Gaussian process. The ensemble converges to the NNGP, which is equivalent to performing inference with a Gaussian process with corresponding covariance function as defined previously.
 
 All of the code used to make these plots can be found at [github.com/wvirany/NNGP](https://github.com/wvirany/NNGP).
-
-
-
-### Conclusion
-
 
 
 
