@@ -111,7 +111,7 @@ $$
 where
 
 $$
-m(\mathbf{x}) = \mathbf{E} \left[ f(\mathbf{x}) \right] = 0,
+m(\mathbf{x}) = \mathbb{E} \left[ f(\mathbf{x}) \right] = 0,
 $$
 
 and
@@ -160,7 +160,7 @@ The covariance function of the corresponding GP at each layer is defined recursi
 ### Comments on the Covariance Function
 
 
-As was previously alluded to the computation of the covariance function is often difficult to evaluate, and depends on the specific architecture and choice of activation functions in the neural network. Computing the covariance function involves integrating over the distributions of the weights and biases for each pair of training samples. For many architectures, this requires sophisticated numerical integration techniques, and is often not practical from a computational perspective. Furthermore, this becomes increasingly challenging with larger datasets.
+As was previously alluded to, the computation of the covariance function is often difficult to evaluate, and depends on the specific architecture and choice of activation functions in the neural network. Computing the covariance function involves integrating over the distributions of the weights and biases for each pair of training samples. For many architectures, this requires sophisticated numerical integration techniques, and is often not practical from a computational perspective. Furthermore, this becomes increasingly challenging with larger datasets.
 
 However, in the case of a single hidden layer, certain choices of activation functions do yield analytic covariance functions. [Williams [1996]](https://proceedings.neurips.cc/paper_files/paper/1996/file/ae5e3ce40e0404a45ecacaaf05e5f735-Paper.pdf) gives such an example; the error function, defined by
 
@@ -178,6 +178,8 @@ where $\Sigma$ denotes the covariance matrix of the input-to-hidden layer weight
 
 
 ### Empirical Results
+
+In this section I show two examples...
 
 <a href="#fig1">Figure 1</a> shows the distribution over network priors for an increasing number of hidden units (network priors being the function represented by the network at initialization, before training). Each point represents a neural network prior (i.e., no training) with a single hidden layer, a single input, and a single output, with 1, 3, and 10 tanh hidden units, respectively from left to right. The parameters were drawn from a Normal distribution with $\sigma_b^{(0)} = \sigma_w^{(0)} =5$, $\sigma_b^{(1)} = 0.1$, and $\sigma_w^{(1)} = 1/\sqrt{N}$, where $N$ is the number of units in the hidden layer. The horizontal axis is the output of the network when the input is -0.2; the vertical axis is the output of the network when the input is 0.4.
 
