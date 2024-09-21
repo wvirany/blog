@@ -15,7 +15,7 @@ description = "Blog - Walter Virany"
 
 # Appearance settings
 theme = 'light'
-colorPalette = 'default'
+colorPalette = 'default' # default, catpuccin, gruvebox, eink
 hideHeader = false
 
 # Collection to display on home
