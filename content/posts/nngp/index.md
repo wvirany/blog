@@ -179,7 +179,7 @@ where $\Sigma$ denotes the covariance matrix of the input-to-hidden layer weight
 
 ### Empirical Results
 
-In this section I show two examples...
+In this section, I show two experiments which demonstrate the empirical behavior of the NNGP.
 
 <a href="#fig1">Figure 1</a> shows the distribution over network priors for an increasing number of hidden units (network priors being the function represented by the network at initialization, before training). Each point represents a neural network prior (i.e., no training) with a single hidden layer, a single input, and a single output, with 1, 3, and 10 tanh hidden units, respectively from left to right. The parameters were drawn from a Normal distribution with $\sigma_b^{(0)} = \sigma_w^{(0)} =5$, $\sigma_b^{(1)} = 0.1$, and $\sigma_w^{(1)} = 1/\sqrt{N}$, where $N$ is the number of units in the hidden layer. The horizontal axis is the output of the network when the input is -0.2; the vertical axis is the output of the network when the input is 0.4.
 

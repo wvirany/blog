@@ -1,9 +1,9 @@
 ---
 title: "Building AlphaFold from Scratch"  
-date: "2024-10-03"  
+date: "2024-10-15"  
 summary: ""  
 description: ""  
-draft: false  
+draft: true  
 toc: false  
 readTime: true  
 autonumber: false  
