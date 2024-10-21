@@ -13,7 +13,7 @@ showTags: false
 hideBackToTop: false
 ---
 
-A significant challenge in the use of generative modeling for molecular design is the problem of synthesizability. That is, a fancy deep learning model might make a molecule that checks all of our boxes, but can it actually be synthesized in a lab? If the answer is no, then that *in silico* molecule is not very useful.
+A significant challenge in the use of generative modeling for molecular design is the problem of synthesizability. That is, a fancy deep learning model might make a molecule that checks all of our boxes in terms of desirable properties, but can it actually be synthesized in a lab? If the answer is no, then that *in silico* molecule is not very useful.
 
 There are many attempts to overcome this problem, but one elegant approach is the work of [Luo et al. [2024]](https://arxiv.org/pdf/2406.04628), in which they "project" molecules into synthesizable chemical space.
 
