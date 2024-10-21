@@ -49,9 +49,9 @@ url = "https://www.youtube.com/channel/UC3atzAmp5W9vJ2vnOKUYrvA"
 name = "home"
 url = "/"
 
-[[params.menu]]
-name = "posts"
-url = "/posts"
+# [[params.menu]]
+# name = "posts"
+# url = "/posts"
 
 [[params.menu]]
 name = "about"
