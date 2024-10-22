@@ -1,5 +1,5 @@
 ---
-title: "Generative Modeling and Synthesizability for Molecular Design (1/2)"  
+title: "Generating Synthesizable Molecules (1/2)"  
 date: ""  
 summary: "Part 1: Projecting Molecules into Synthesizable Chemical Spaces"  
 description: ""  
@@ -16,6 +16,23 @@ hideBackToTop: false
 A significant challenge in the use of generative modeling for molecular design is the problem of synthesizability. That is, a fancy deep learning model might make a molecule that checks all of our boxes in terms of desirable properties, but can it actually be synthesized in a lab? If the answer is no, then that *in silico* molecule is not very useful.
 
 There are many attempts to overcome this problem, but one elegant approach is the work of [Luo et al. [2024]](https://arxiv.org/pdf/2406.04628), in which they "project" molecules into synthesizable chemical space.
+
+I've reimplemented this paper with some minor simplifications to demonstrate stuff...
+
+### Prelims
+
+Here are a few packages we'll use:
+
+```python
+import torch
+import torch.nn as nn
+
+from rdkit import Chem
+from rdkit.Chem import AllChem, rdChemReactions
+
+from typing import List, Dict, Union
+```
+
 
 
 ### Defining Chemical Space
@@ -42,6 +59,20 @@ R: \mathcal{X_1} \times \mathcal{X_2} &\to \mathcal{C}, \quad \text{or} \\\\
 $$
 
 Here, $\mathcal{X_1}$ and $\mathcal{X_2}$ are sets of molecules to which reaction $R$ can be applied, and $Y$ is the main reaction product. $\mathcal{C}$ is then constructed by applying the reactions iteratively to every possible combination of molecules. For the sake of clarity, we assume the reaction only has one main product, although this is not always the case. However, the implementation which follows supports both cases.
+
+Let's implement this. We start by defining `Molecule` and `Reaction` classes:
+
+```python
+class Molecule:
+
+    def __init__(self, smiles: str):
+        self.smiles = smiles
+        self._rdmol = Chem.MolFromSmiles(smiles)
+    
+    @property
+    def rdmol(self):
+        return self._rdmol
+```
 
 
 ### Postfix Notation of Synthesis
