@@ -1,5 +1,5 @@
 ---
-title: "Generating Synthesizable Molecules (1/2)"  
+title: "Generative Modeling and Synthesizability for Molecular Design (1/2)"  
 date: ""  
 summary: "Part 1: Projecting Molecules into Synthesizable Chemical Spaces"  
 description: ""  
