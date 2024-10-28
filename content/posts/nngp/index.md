@@ -23,7 +23,7 @@ In this blog post, I explain the NNGP, reviewing the works of both [Neal [1996]]
 
 Informally, a GP is defined as a collection of random variables such that any finite collection of which take a multivariate Normal distribution. GPs can be thought of as an infinite-dimensional generalization of the multivariate Normal distribution, i.e., it is a distribution over functions with a continuous domain.
 
-In machine learning, most supervised learning techniques take a parametric modeling approach, in which the task is to estimate the parameters of a function class given observations from the distribution[^fn2]&nbsp;. GPs, on the other hand, take a non-parametric Bayesian approach, in which minimal assumptions are made about the underlying distribution of data. This permits a more flexible model for characterizing said distribution, whether it be by regression, clustering, or otherwise.
+In machine learning, most supervised learning techniques take a parametric modeling approach, in which the task is to estimate the parameters of a function class given observations from the distribution[^fn2]. GPs, on the other hand, take a non-parametric Bayesian approach, in which minimal assumptions are made about the underlying distribution of data. This permits a more flexible model for characterizing said distribution, whether it be by regression, clustering, or otherwise.
 
 For a more thorough explanation of GPs, I highly recommend [this blog post](https://distill.pub/2019/visual-exploration-gaussian-processes/).
 
@@ -59,13 +59,13 @@ Finally, if a function $f(x)$ is a GP with mean function $m(x)$ and covariance f
 
 ### Single-Layer Neural Networks as Gaussian Processes
 
-First, we assume the weight and bias parameters are drawn i.i.d. from a Normal distribution, with $\mu_b = \mu_w = 0, \sigma_b^2 = 1$, and $\sigma_w^2 = 1/n_l$&nbsp;[^fn3]&nbsp;. Following the notation previously introduced, we begin with the computation of the pre-activation units in the first layer:
+First, we assume the weight and bias parameters are drawn i.i.d. from a Normal distribution, with $\mu_b = \mu_w = 0, \sigma_b^2 = 1$, and $\sigma_w^2 = 1/n_l$[^fn3]. Following the notation previously introduced, we begin with the computation of the pre-activation units in the first layer:
 
 $$
 Z_j^{(1)} = b_j^{(0)} + \sum_{i=1}^{n_0}w_{ji}^{(0)}x_i.
 $$
 
-Since each $w_{ji}, b_j$ is i.i.d. Normal, then $Z_j^{(1)}$ is i.i.d. Normal[^fn4]&nbsp;with mean
+Since each $w_{ji}, b_j$ is i.i.d. Normal, then $Z_j^{(1)}$ is i.i.d. Normal[^fn4] with mean
 
 $$
 \begin{align*}
@@ -80,7 +80,7 @@ $$
 \begin{align*}
 & \mathbb{E} \left[ Z_j^{(1)}(\mathbf{x}) \\, Z_j^{(1)}(\mathbf{x}^{\prime}) \right] = \mathbb{E} \left[ \left( b_j^{(0)} + \sum_{i=1}^{n_0} w_{ji}^{(0)} x_i \right) \left( b_j^{(0)} + \sum_{i=1}^{n_0} w_{ji}^{(0)} x_i^{\prime} \right) \right] \\\\
     &= \mathbb{E} \left[ b_j^{(0)} \right]^2 + \mathbb{E} \left[ b_j^{(0)} \sum_{i=1}^{n_0} w_{ji}^{(0)} x_i \right] + \mathbb{E} \left[ b_j^{(0)} \sum_{i=1}^{n_0} w_{ji}^{(0)} x_i^{\prime} \right] + \sum_{i=1}^{n_0} \sum_{k=1}^{n_0} x_i \, x_k^{\prime} \mathbb{E} \left[ w_{ji}^{(0)} \right] \\\\
-    &= \sigma_b^2 + \mathbb{E} \left[ b_j^{(0)} \right] \mathbb{E} \left[ w_{ji}^{(0)} \right] \sum_{i=1}^{n_0} (x_i + x_i') + \sigma_w^2 \sum_{i=1}^{n_0} \sum_{k=1}^{n_0} x_i \, x_k^{\prime}.
+    &= \sigma_b^2 + \mathbb{E} \left[ b_j^{(0)} \right] \mathbb{E} \left[ w_{ji}^{(0)} \right] \sum_{i=1}^{n_0} (x_i + x_i^\prime) + \sigma_w^2 \sum_{i=1}^{n_0} \sum_{k=1}^{n_0} x_i \, x_k^{\prime}.
 \end{align*}
 $$
 
@@ -118,9 +118,9 @@ and
 
 $$
 \begin{align*}
-    k(\mathbf{x}, \mathbf{x}^\prime) &= \text{Cov}{\left( f(\mathbf{x}), f(\mathbf{x}') \right)} \\\\
-        &= \mathbb{E} \left[ \left( b^{(1)} + \sum_{i=1}^{n_1} w_{ji}^{(1)} A_i^{(1)}(\mathbf{x}) \right) \left( b^{(1)} + \sum_{i=1}^{n_1} w_{ji}^{(1)} A_i^{(1)} (\mathbf{x}') \right) \right] \\\\
-        &= \sigma_b^2 + \sigma_w^2 \mathbb{E} \left[ A^{(1)}(\mathbf{x}), A^{(1)}(\mathbf{x}') \right] \\\\
+    k(\mathbf{x}, \mathbf{x}^\prime) &= \text{Cov}{\left( f(\mathbf{x}), f(\mathbf{x}^\prime) \right)} \\\\
+        &= \mathbb{E} \left[ \left( b^{(1)} + \sum_{i=1}^{n_1} w_{ji}^{(1)} A_i^{(1)}(\mathbf{x}) \right) \left( b^{(1)} + \sum_{i=1}^{n_1} w_{ji}^{(1)} A_i^{(1)} (\mathbf{x}^\prime) \right) \right] \\\\
+        &= \sigma_b^2 + \sigma_w^2 \mathbb{E} \left[ A^{(1)}(\mathbf{x}), A^{(1)}(\mathbf{x}^\prime) \right] \\\\
         &= 1 + \frac{1}{n_1} C(\mathbf{x}, \mathbf{x}^\prime),
 \end{align*}
 $$

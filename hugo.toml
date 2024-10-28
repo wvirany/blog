@@ -70,9 +70,9 @@ unsafe = true
 # Giscus comments
 [params.giscus]
 enable = false
-repo = "user/repo"
-repoid = "repoId"
-category = "General"
+repo = "your/repo"
+repoid = "id"
+category = "category"
 categoryid = "categoryId"
 mapping = "pathname"
-theme = "preferred_color_scheme"
+theme = "preferred_color_scheme" 
