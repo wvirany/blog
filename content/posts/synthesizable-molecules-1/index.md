@@ -289,7 +289,7 @@ class EncoderLayer(nn.Module):
         return x
 ```
 
-This is just a conventional encoder layer as defined in [Vaswani et al., [2017](https://arxiv.org/pdf/1706.03762), with a multi-head self-attention mechanism, followed by an MLP, with layer normalization and residual connections in between. This just takes our embedding vectors as input, and returns vectors of the same shape:
+This is just a conventional encoder layer as defined in [Vaswani et al., [2017]](https://arxiv.org/pdf/1706.03762), with a multi-head self-attention mechanism, followed by an MLP, with layer normalization and residual connections in between. This just takes our embedding vectors as input, and returns vectors of the same shape:
 
 ```py
 d_model = 8
@@ -298,7 +298,7 @@ encoder_layer = EncoderLayer(d_model=d_model, nhead=2)
 output = layer(atoms)
 ```
 
-where we used the `atoms` tensor from the previous example. Now, the output is the same shape as the original embedded representation:
+Here, we used the `atoms` tensor from the previous example. Now, the output is the same shape as the original embedded representation:
 
 ```
 Output shape: torch.Size([3, 8])
@@ -309,7 +309,7 @@ We put this together in the following `GraphEncoder` class:
 
 ```py
 class GraphEncoder(nn.Module):
-    def __init__(self, num_atom_classes=100, num_bond_classes, dim=8, n_layers):
+    def __init__(self, num_atom_classes=100, num_bond_classes=5, dim=8, n_layers=2, n_heads=2):
         super().__init__()
         self.atom_emb = nn.Embedding(num_atom_classes, dim, padding_idx=0)
         self.bond_emb = nn.Embedding(num_bond_classes, dim, padding_idx=0)
@@ -320,7 +320,7 @@ class GraphEncoder(nn.Module):
             nhead=n_heads,
             batch_first=True
         )
-        # Stack encoder layers in sequence of n_layers
+        # Stack encoder layers in sequence
         self.transformer = nn.TransformerEncoder(
             encoder_layer,
             num_layers=n_layers
