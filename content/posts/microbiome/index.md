@@ -33,7 +33,7 @@ import seaborn as sns
 
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.pipeline import Pipeline
-from sklearn.metrics import roc_auc_score, confusion_matrix, RocCurveDisplay
+from sklearn.metrics import roc_auc_score, accuracy_score, precision_score, recall_score, f1_score, balanced_accuracy_score, confusion_matrix, RocCurveDisplay
 from sklearn.linear_model import LassoCV, ElasticNetCV
 
 from sklearn.svm import SVC
