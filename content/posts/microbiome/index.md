@@ -681,11 +681,9 @@ Next, I'm going to train two instances of this classifier: one trained on the to
 The pipeline for each of the classifiers is defined as follows:
 
 ```py
-models = [lgbm, xgb, cat, rf_vote]
-
 # Pipeline for model trained on top k features
 vote = VotingClassifier(
-    estimators=[('lgbm', lgbm), ('xgb', xgb), ('cat', cat), ('rf', rf)],
+    estimators=[('lgbm', lgbm), ('xgb', xgb), ('cat', cat), ('rf', rf_vote)],
     voting='soft',
     weights = [2, 1, 1, .5]
 )
@@ -697,7 +695,7 @@ steps = [
 
 # Pipeline for model trained on 20 features
 vote_20 = VotingClassifier(
-    estimators=[('lgbm', lgbm), ('xgb', xgb), ('cat', cat), ('rf', rf)],
+    estimators=[('lgbm', lgbm), ('xgb', xgb), ('cat', cat), ('rf', rf_vote)],
     voting='soft',
     weights = [2, 1, 1, .5]
 )
