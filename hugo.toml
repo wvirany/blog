@@ -57,6 +57,10 @@ url = "/"
 name = "about"
 url = "/about"
 
+[[params.menu]]
+name = "why?"
+url = "/why"
+
 # Syntax highlighting on code blocks
 [markup]
 [markup.highlight]
