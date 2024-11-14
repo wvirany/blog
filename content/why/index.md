@@ -18,4 +18,4 @@ That's all, hopefully you find some value in the things I write. 🙂
 [Terence Tao](https://terrytao.wordpress.com/),
 [Practical Cheminformatics](https://practicalcheminformatics.blogspot.com/),
 [Matt Might](https://matt.might.net/),
-to name a few.
+to name a few
