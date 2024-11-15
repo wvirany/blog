@@ -11,9 +11,9 @@ I initially started maintaining an academic page to host a portfolio where I cou
 
 **Third**, I treat this as a sort of "long-term memory," where I can go back and quickly reference the things that I've spent time learning. Before, I have often found myself learning and re-learning the same subjects, so having things in this neat format helps to make this process more efficient.
 
-**Finally**, I am a believer of open-source science, and furthermore of making science more accessible to everyone. It is my hope that this blog makes a small contribution toward that goal.
+**Finally**, I like to communicate scientific concepts. I am a believer of open-source science, and furthermore of making science more accessible to everyone. It is my hope that this blog makes a small contribution toward that goal.
 
-That's all, hopefully you find some value in the things I write. 🙂
+Hopefully you find some value in the things I write. 🙂
 
 [^fn1]: Some blogs which I've found to be valuable: 
 [Distill](https://distill.pub/), 
