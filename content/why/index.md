@@ -1,4 +1,7 @@
-## Why the blog?
++++
+title = 'Why the blog?'
+draft = false
++++
 
 I initially started maintaining an academic page to host a portfolio where I could show off my projects to potential employers. However, it quickly turned into a small passion for writing about the things I'm working on. Now, I enjoy maintaining this blog for several reasons:
 
