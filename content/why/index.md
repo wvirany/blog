@@ -3,7 +3,7 @@ title = 'Why the blog?'
 draft = false
 +++
 
-I initially started maintaining an academic page to host a portfolio where I could show off my projects to potential employers. However, it quickly turned into a small passion for writing about the things I'm working on. Now, I enjoy maintaining this blog for several reasons:
+I initially created an academic page to host a portfolio where I could show off my projects to potential employers. However, it quickly turned into a small passion for writing about the things I'm working on. Now, I enjoy maintaining this blog for several reasons:
 
 **First**, I often find myself looking for resources which dumb down complicated research topics so that I can understand them. I have benefitted substantially from other academic blogs on the internet, so I maintain this blog in an attempt to repay that debt to others.[^fn1]
 
