@@ -1,6 +1,6 @@
 ---
 title: "Foundations of Bayesian Optimization"  
-date: ""  
+date: "Dec 12 2024"  
 summary: ""  
 description: ""  
 draft: true  

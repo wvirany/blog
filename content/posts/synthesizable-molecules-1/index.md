@@ -20,7 +20,7 @@ This effectively boils down to a machine translationt task, in which a generated
 
 In this blog post, I aim to review the work of [Luo et al. [2024]](https://arxiv.org/pdf/2406.04628). The first ~half is essentially a tutorial on implementing their work. The second half explores experiments?
 
-something something tutorial?
+something something lightweight / simple tutorial for demonstration and reproducibility?
 
 ## Preliminaries
 
