@@ -32,6 +32,10 @@ breadcrumbs = false
 
 # Social icons
 [[params.social]]
+name = "googlescholar"
+url = "https://scholar.google.ca/citations?hl=en&user=S2GA1h8AAAAJ"
+
+[[params.social]]
 name = "linkedin"
 url = "https://www.linkedin.com/in/walter-virany/"
 

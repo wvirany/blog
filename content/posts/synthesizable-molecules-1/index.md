@@ -13,6 +13,15 @@ showTags: false
 hideBackToTop: false
 ---
 
+------------
+TODO:
+- [ ] Replace package imports at end with only what is needed
+- [x] Molecules as bits
+- [] Defining chemical space
+- [] Postfix notation
+- [] Transformer model
+------------
+
 A significant challenge in the use of generative modeling for molecular design is the problem of synthesizability. That is, a fancy deep learning model might make a molecule that checks all of our boxes in terms of desirable properties, but can it actually be synthesized in a lab? If the answer is no, then that *in silico* molecule is not very useful.
 
 There are many attempts to overcome this problem, but one elegant approach is the work of [Luo et al. [2024]](https://arxiv.org/pdf/2406.04628), in which they "project" molecules into synthesizable chemical space.
@@ -37,6 +46,92 @@ from rdkit.Chem import AllChem, rdChemReactions
 from typing import List, Dict, Union
 ```
 
+### Molecules as Bits
+
+We ultimately want to “featurize” molecules, i.e., we want to encode them in a format suitable for input to a transformer model.
+We'll do so by representing a molecule as a graph.
+Thus, we store the nodes (atoms) in a list, and the edges between nodes (bonds) in an adjacency matrix.
+
+First, it will be useful to define the following `Molecule` class, a simple wrapper around the RDKit molecule object:
+
+```py
+class Molecule:
+    def __init__(self, smiles: str):
+        self.smiles = smiles
+        self._rdmol = Chem.MolFromSmiles(smiles)
+    
+    @property
+    def rdmol(self):
+        return self._rdmol
+```
+
+We can start by defining a simple molecule, ethanol:
+
+```py
+# Create a molecule
+ethanol = Molecule("CCO")
+
+mol = ethanol.rdmol
+```
+
+Let's also visualize the molecule:
+
+```py
+# Show carbons in molecule
+Chem.AllChem.Compute2DCoords(mol)
+for atom in mol.GetAtoms():
+    atom.SetProp('atomLabel', atom.GetSymbol())
+
+img = Draw.MolToImage(mol, size=(300, 300))
+display(img)
+```
+
+<div id="fig1" class="figure">
+  <img src="figures/ethanol.png" alt="Unscaled Healthy" style="width:40%; margin-left: auto; margin-right:auto">
+</div>
+
+Next, we'll represent atoms by their atomic number:
+
+```py
+num_atoms = mol.GetNumAtoms()
+
+# Atom features
+atoms = torch.zeros(num_atoms, dtype=torch.float32)
+for i in range(num_atoms):
+    atom = mol.GetAtomWithIdx(i)    # Gets atom object
+    atoms[i] = atom.GetAtomicNum()  # Gets corresponding atomic number
+
+atoms
+```
+
+```
+tensor([6., 6., 8.])
+```
+
+And we'll store bonds as their bond types in an adjacency matrix. This effectively captures information regarding which atoms in the molecule are bonded, and what type of bond they share (e.g., single, double, etc.):
+
+```py
+# Bond features
+
+# Bond features: create adjacency matrix with bond types
+bonds = torch.zeros((num_atoms, num_atoms), dtype=torch.long)
+for bond in mol.GetBonds():
+    i = bond.GetBeginAtomIdx()              # Get first atom in bond
+    j = bond.GetEndAtomIdx()                # Get second atom in bond
+    bond_type = bond.GetBondTypeAsDouble()  # Get bond type
+
+    # Graph is undirected, so atom i and j both have the same mutual bond
+    bonds[i, j] = bond_type
+    bonds[j, i] = bond_type
+
+bonds
+```
+
+```
+tensor([[0, 1, 0],
+        [1, 0, 1],
+        [0, 1, 0]])
+```
 
 
 ### Defining Chemical Space
@@ -166,7 +261,7 @@ num_atoms = mol.GetNumAtoms()
 # Atom features
 atoms = torch.zeros(num_atoms, dtype=torch.float32)
 for i in range(num_atoms):
-    atom = rdmol.GetAtomWithIdx(i)
+    atom = mol.GetAtomWithIdx(i)
     atoms[i] = atom.GetAtomicNum()
 
 # Bond features
