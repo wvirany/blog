@@ -4,7 +4,7 @@ date: "Dec 12 2024"
 summary: ""  
 description: ""  
 draft: true  
-toc: false  
+toc: true  
 readTime: true  
 autonumber: false  
 math: true  
@@ -25,3 +25,11 @@ x^* \in \arg \max_{x \in \mathcal{X}}
 $$
 
 * $f$ need not be analytic (i.e., can't write it down), nor computable - we just need some access to information at specified points
+
+
+
+## Modeling Uncertainty
+
+### Gaussian Processes
+
+### Neural Network Ensembles
