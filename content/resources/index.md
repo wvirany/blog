@@ -7,6 +7,8 @@ Some useful resources roughly organized by topic
 
 ### Bayesian Optimization
 
+* [A Tutorial on Bayesian Optimization, Peter Frazier](https://arxiv.org/pdf/1807.02811)
+
 * [Bayesian Optimization Tutorial, Martin Krasser](https://krasserm.github.io/2018/03/21/bayesian-optimization/)
 
 ### Gaussian Processes
@@ -32,3 +34,14 @@ Some useful resources roughly organized by topic
 * [Gaussian Processes for Machine Learning, Rasmussen & Williams](http://gaussianprocess.org/gpml/chapters/RW.pdf)
 
 * [Bayesian Optimization Book, Garnett](https://bayesoptbook.com/)
+
+
+## Misc
+
+* [How to use Linux](https://tldp.org/LDP/intro-linux/html/index.html)
+
+## Academic Writing
+
+* [3 Sins of Technical Writing](https://www.cs.cmu.edu/~jrs/sins.html)
+
+* [Tips for writing a good research paper](https://www.microsoft.com/en-us/research/academic-program/write-great-research-paper/)
