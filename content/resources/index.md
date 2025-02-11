@@ -27,13 +27,23 @@ Some useful resources roughly organized by topic
     A useful RDKit wrapper for handling molecules
 
 
+## Tutorials
+
+ * [BoTorch Tutorials](https://botorch.org/tutorials/)
 
 
 ## Textbooks
 
 * [Gaussian Processes for Machine Learning, Rasmussen & Williams](http://gaussianprocess.org/gpml/chapters/RW.pdf)
 
+* [Probabilistic Machine Learning: An Introduction](https://probml.github.io/pml-book/book1.html)
+
 * [Bayesian Optimization Book, Garnett](https://bayesoptbook.com/)
+
+
+## Courses
+
+* [Statistical Rethinking (2024)](https://github.com/rmcelreath/stat_rethinking_2024)
 
 
 ## Misc

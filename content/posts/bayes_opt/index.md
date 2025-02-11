@@ -1,6 +1,6 @@
 ---
-title: "Foundations of Bayesian Optimization"  
-date: "Dec 12 2024"  
+title: "Bayesian Optimization for Molecular Design"  
+date: "2025-02-01"  
 summary: ""  
 description: ""  
 draft: true  
@@ -8,7 +8,7 @@ toc: true
 readTime: true  
 autonumber: false  
 math: true  
-tags: ["code, drug discovery"]
+tags:
 showTags: false  
 hideBackToTop: false
 ---
@@ -28,8 +28,3 @@ $$
 
 
 
-## Modeling Uncertainty
-
-### Gaussian Processes
-
-### Neural Network Ensembles

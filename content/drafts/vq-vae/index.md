@@ -1,5 +1,5 @@
 ---
-title: "Learning Representations of Proteins"  
+title: "A VQ-VAE for Molecular Representation Learning"  
 date: "2024-12-09"  #2024-12-20
 summary: ""  
 description: ""  
@@ -13,7 +13,7 @@ showTags: false
 hideBackToTop: false
 ---
 
-In this blog, I build a VQ-VAE for for protein structure tokenization which learns meaningful representations of proteins.
+In this blog, I build a VQ-VAE for for protein structure tokenization which learns meaningful representations of molecules.
 
 
 ## Variational Autoencoders
@@ -261,7 +261,7 @@ train_vae(model, train_loader, num_epochs=10)
 
 ### Implementation
 
-## Learning the Representations of Proteins
+## Learning Representations of Molecules
 
 ## References and Further Reading
 

@@ -1,6 +1,6 @@
 ---
 title: "Generating Synthesizable Molecules (1/2)"  
-date: "" # 2024-01-10
+date: "" 
 summary: "Part 1: Projecting Molecules into Synthesizable Chemical Spaces"  
 description: ""  
 draft: true  
