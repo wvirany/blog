@@ -58,8 +58,8 @@ url = "/"
 # url = "/posts"
 
 [[params.menu]]
-name = "about"
-url = "/about"
+name = "me"
+url = "/me"
 
 [[params.menu]]
 name = "why?"
