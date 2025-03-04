@@ -50,7 +50,7 @@ url = "https://www.youtube.com/channel/UC3atzAmp5W9vJ2vnOKUYrvA"
 
 # Main menu pages
 [[params.menu]]
-name = "home"
+name = "blog"
 url = "/"
 
 # [[params.menu]]

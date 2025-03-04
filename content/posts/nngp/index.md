@@ -217,7 +217,7 @@ All of the code used to make these plots can be found at [github.com/wvirany/NNG
 
 
 [^fn1]: Here, "the prior distribution of functions represented by neural networks" refers to the fact that a neural network represents a function, and at initialization, the parameters which characterize that function are each drawn from a distribution. Hence, the function itself is drawn from a joint distribution of all its parameters.
-[^fn2]: For example, this correspondings to solving the least squares regression problem, in which the function class consists of all affine functions, and the parameters are the slope and intercept of the line which best fits some set of observations.
+[^fn2]: For example, this could correspond to solving the least squares regression problem in 2D, in which the function class consists of all affine functions, and the parameters are the slope and intercept of the line which best fit some set of observations.
 [^fn3]: As we will see later, it is necessary to define the variance of the weight parameters as $\sigma_w^2 = 1/n_l$ so that when we take the number of hidden units to infinity, the sum over all these units will converge.
 [^fn4]: This follows from the fact that an affine transformation of i.i.d. Normal random variables is itself i.i.d. Normal.
 [^fn5]: Note that the covariance function of the GP for the units in each layer depends on the activation functions in all the previous layers.

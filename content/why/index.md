@@ -20,4 +20,4 @@ With that being said, I hope you find some value in the things I write. 🙂
 [Distill](https://distill.pub/),
 [Terence Tao](https://terrytao.wordpress.com/career-advice/),
 [Matt Might](https://matt.might.net/),
-to name a few
+to name a few.
