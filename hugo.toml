@@ -3,11 +3,11 @@ languageCode = 'en-us'
 title = 'Walter Virany'
 theme = 'theme'
 
+# Google analytics code
+googleAnalytics = "G-40CWX6Y06Y"
+
 [taxonomies]
 tag = 'tags'
-
-# Google analytics code
-googleAnalytics = "G-xxxxxxxxx"
 
 [params]
 # Meta description
