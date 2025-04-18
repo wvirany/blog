@@ -9,7 +9,7 @@ I initially created an academic page to host a portfolio where I could show off 
 
 **Second**, the act of writing down the things that I am currently working on in a polished format forces me to refine my understanding of the concepts, and also helps me to develop my writing skills. Furthermore, it gives me a chance to get feedback on my work, which would otherwise stay in (electronic) notebooks and never see the light of day[^fn2].
 
-**Third**, I treat this as a sort of "long-term memory," where I can go back and quickly reference the things that I've spent time learning. I often find myself learning and re-learning the same subjects, so having things in this neat format helps to make that process more efficient.
+**Third**, I treat this as a sort of "long-term memory," where I can go back and quickly reference the things that I've spent time learning. I often find myself re-learning the same subjects that I haven't seen in a while, so having things in this neat format helps to make that process more efficient.
 
 With that being said, I hope you find some value in the things I write. 🙂
 
@@ -20,4 +20,4 @@ With that being said, I hope you find some value in the things I write. 🙂
 [Matt Might](https://matt.might.net/),
 to name a few.
 
-[^fn2]: I gratefully welcome feedback! Please feel free to reach out to me or leave your thoughts in the discussion section of my posts.
+[^fn2]: I gratefully welcome feedback! Please feel free to reach out to me or leave your thoughts in the discussion section of my posts, whether it be errors or something else.
