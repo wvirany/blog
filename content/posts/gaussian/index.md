@@ -3,7 +3,7 @@ title: "Some math behind the Gaussian distribution"
 date: "2025-06-09"  
 summary: ""  
 description: ""  
-draft: false
+draft: true
 toc: false  
 readTime: true  
 autonumber: false  
