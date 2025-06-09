@@ -63,7 +63,7 @@ To Do:
 
 Despite its ubiquity, I have frequently found myself in a state somewhere between *discomfort* and *panic* each time I am faced with the task of manipulating the Gaussian distribution, particularly in multiple dimensions. So, I've taken the opportunity to work through some detailed derivations involving the Gaussian.
 
-In this blog, I focus on the multivariate Gaussian distribution, beginning by reasoning about its shape and properties in high dimensions. Then, I derive some useful formulas such as conditioning, marginalization, and some transformations.
+In this blog, I focus on the multivariate Gaussian distribution, beginning by reasoning about its shape and properties in high dimensions. Then, I derive some useful formulas such as conditioning, marginalization, and certain transformations.
 
 
 ## Properties
