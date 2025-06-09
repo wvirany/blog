@@ -15,15 +15,15 @@ hideBackToTop: false
 
 Despite their overwhelming success in modern machine learning, deep neural networks remain poorly understood from a theoretical perspective. Classical statistical wisdom dictates that overparameterized models (i.e., models with more degrees of freedom than data samples) should overfit noisy data and thus generalize poorly. Yet, even in cases in which deep neural networks fit noisy training data almost perfectly, they still exhibit good generalizability. This contradiction has highlighted a serious gap between the theory and practice of deep learning, motivating the need for a more complete theoretical framework.
 
-An interesting result in the theoretical study of deep learning is the Neural Network Gaussian Process (NNGP), which shows the equivalence between neural networks and Gaussian processes (GPs). Indeed, [Neal [1996]](https://doi.org/10.1007/978-1-4612-0745-0_2) first showed that the prior distribution of functions represented by neural networks with a single hidden layer converges to a GP in the limit as the number of hidden units is taken to infinity[^fn1]. More recently, [Lee et al. [2018]](https://arxiv.org/pdf/1711.00165) extended this work to the case of deep neural networks.
+An interesting result in the theoretical study of deep learning is the Neural Network Gaussian Process (NNGP), which shows the equivalence between neural networks and Gaussian processes (GPs). Indeed, [Neal [1996]](#references-and-further-reading) first showed that the prior distribution of functions represented by neural networks with a single hidden layer converges to a GP in the limit as the number of hidden units is taken to infinity[^fn1]. More recently, [Lee et al. [2018]](#references-and-further-reading) extended this work to the case of deep neural networks.
 
-In this blog post, I explain the NNGP, reviewing the works of both [Neal [1996]](https://doi.org/10.1007/978-1-4612-0745-0_2) and [Lee et al. [2018]](https://arxiv.org/pdf/1711.00165). I aim to clarify the mathematical argumments which lead to their results in a detailed and step-by-step fashion. Then, I show some empirical results which further exemplify the NNGP.
+In this blog post, I explain the NNGP, reviewing the works of both [Neal [1996]](#references-and-further-reading) and [Lee et al. [2018]](#references-and-further-reading). I aim to clarify the mathematical argumments which lead to their results in a detailed and step-by-step fashion. Then, I show some empirical results which further exemplify the NNGP.
 
 ### Gaussian Processes
 
-Informally, a GP is defined as a collection of random variables such that any finite collection of which take a multivariate Normal distribution. GPs can be thought of as an infinite-dimensional generalization of the multivariate Normal distribution, i.e., it is a distribution over functions with a continuous domain.
+Formally, a GP is defined as a collection of random variables such that any finite collection of which take a multivariate Normal distribution. GPs can be thought of as an infinite-dimensional generalization of the multivariate Normal distribution, i.e., it is a distribution over functions with a continuous domain.
 
-In machine learning, most supervised learning techniques take a parametric modeling approach, in which the task is to estimate the parameters of a function class given observations from the distribution[^fn2]. GPs, on the other hand, take a non-parametric Bayesian approach, in which minimal assumptions are made about the underlying distribution of data. This permits a more flexible model for characterizing said distribution, whether it be by regression, clustering, or otherwise.
+In machine learning, most supervised learning techniques take a parametric modeling approach, in which the task is to estimate the parameters of a function class given observations from the distribution[^fn2]. GPs, on the other hand, take a nonparametric Bayesian approach, in which minimal assumptions are made about the underlying distribution of data. This permits a more flexible model for characterizing said distribution, whether it be by regression, clustering, or otherwise.
 
 For a more thorough explanation of GPs, I highly recommend [this blog post](https://distill.pub/2019/visual-exploration-gaussian-processes/).
 
@@ -125,7 +125,7 @@ $$
 \end{align*}
 $$
 
-where I have introduced the covariance function $C(\mathbf{x}, \mathbf{x}^\prime)$ as in [Neal [1996]](https://doi.org/10.1007/978-1-4612-0745-0_2). This covariance function is often difficult to compute, and depends on the specified activation function. See [Comments on the Covariance Function](#comments-on-the-covariance-function) for further discussion.
+where I have introduced the covariance function $C(\mathbf{x}, \mathbf{x}^\prime)$ as in [Neal [1996]](#references-and-further-reading). This covariance function is often difficult to compute, and depends on the specified activation function. See [Comments on the Covariance Function](#comments-on-the-covariance-function) for further discussion.
 
 
 ### Deep Neural Networks as Gaussian Processes
@@ -162,7 +162,7 @@ The covariance function of the corresponding GP at each layer is defined recursi
 
 As was previously alluded to, the computation of the covariance function is often difficult to evaluate, and depends on the specific architecture and choice of activation functions in the neural network. Computing the covariance function involves integrating over the distributions of the weights and biases for each pair of training samples. For many architectures, this requires sophisticated numerical integration techniques, and is often not practical from a computational perspective. Furthermore, this becomes increasingly challenging with larger datasets.
 
-However, in the case of a single hidden layer, certain choices of activation functions do yield analytic covariance functions. [Williams [1996]](https://proceedings.neurips.cc/paper_files/paper/1996/file/ae5e3ce40e0404a45ecacaaf05e5f735-Paper.pdf) gives such an example; the error function, defined by
+However, in the case of a single hidden layer, certain choices of activation functions do yield analytic covariance functions. [Williams [1996]](#references-and-further-reading) gives such an example; the error function, defined by
 
 $$
 \text{erf } x = \frac{2}{\sqrt{\pi}} \int_0^x e^{-t^2}dt.
@@ -174,7 +174,7 @@ $$
 \mathbb{E} \left[ \text{erf } (\mathbf{x}) \\, \text{erf } (\mathbf{x}^\prime) \right] = \frac{2}{\sqrt{\pi}} \sin^{-1} \left( \frac{2\mathbf{x}^\top \Sigma \mathbf{x}^\prime}{\sqrt{ \left( 1 + 2\mathbf{x}^\top \Sigma \mathbf{x} \right)  \left( 1 + 2 \mathbf{x}^{\prime\top}\Sigma \mathbf{x}^\prime \right) } } \right),
 $$
 
-where $\Sigma$ denotes the covariance matrix of the input-to-hidden layer weights ([Williams [1996]](https://proceedings.neurips.cc/paper_files/paper/1996/file/ae5e3ce40e0404a45ecacaaf05e5f735-Paper.pdf)). Note that this covariance function is not stationary, i.e., it is not translation invariant, which is often a nice property in kernel functions for GP regression.
+where $\Sigma$ denotes the covariance matrix of the input-to-hidden layer weights ([Williams [1996]](#references-and-further-reading)). Note that this covariance function is not stationary, i.e., it is not translation invariant, which is often a nice property in kernel functions for GP regression.
 
 
 ### Empirical Results
