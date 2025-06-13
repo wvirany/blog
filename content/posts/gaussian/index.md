@@ -758,7 +758,7 @@ $$
 \bC & \D
 \end{pmatrix}\inv = \begin{pmatrix}
 \M & -\M\B\D\inv \\\\
--\D\inv\bC\M & \D\inv + \D\inv\bC\M\B\D
+-\D\inv\bC\M & \D\inv + \D\inv\bC\M\B\D\inv
 \end{pmatrix},
 $$
 
