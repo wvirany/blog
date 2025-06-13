@@ -1237,7 +1237,7 @@ The content of this post largely follows section 2.3 of Bishop's *Pattern Recogn
 For the discussion on the sum of two Gaussians, the convolution operation, and the Fourier transform of the Gaussian, I referenced the following:
 
 * [LibreTexts](https://math.libretexts.org/Bookshelves/Differential_Equations/Introduction_to_Partial_Differential_Equations_(Herman)/09%3A_Transform_Techniques_in_Physics/9.06%3A_The_Convolution_Operation) --- This gives a great tutorial on the convolution operation and also shows how to compute the convolution of two zero-mean Gaussians.
-* [This guy's notes](https://www.ee.iitb.ac.in/~belur/ee210/current-tutorials-quizzes/Kenneth-Zeger-UCSD-Gaussian-polar-coordinate.pdf) --- this is a nice tutorial on performing the integral necessary to take the Fourier transform of a zero-mean Gaussian.
+* [Kenneth Zeger's notes](https://www.ee.iitb.ac.in/~belur/ee210/current-tutorials-quizzes/Kenneth-Zeger-UCSD-Gaussian-polar-coordinate.pdf) --- this is a nice tutorial on performing the integral necessary to take the Fourier transform of a zero-mean Gaussian.
 * [Ablowitz & Foxas](https://ftfsite.ru/wp-content/files/tfkp_endlish_2.2.pdf) --- This is the main text I used for complex analysis; chapter 4 deals with contour integration as well as the Fourier transform.
 
 However, I added some details to the derivation and generalized the results for the Fourier transform of the Gaussian to a general Gaussian with nonzero mean.
@@ -1274,7 +1274,7 @@ For more intuition behind the Gaussian distribution, I cannot recommend the foll
   \end{equation}
   $$
 
-  In this case, $\A$ is *diagonalizable*. [^fn7]
+  In this case, $\A$ is *diagonalizable*.
 
   Furthermore, if $\A$ is *real* and *symmetric*, then the eigenvalues of $\A$ are real, and the corresponding eigenvectors are orthonormal, i.e.
 
@@ -1591,5 +1591,3 @@ $$
 It is fairly straightforward to show, however, that the convolution is commutative, i.e., $f * g = g * f$, so this would ultimately yield the same result.
 
 [^fn6]: Note that, in general, finding the first and second moments is not enough to establish that the distribution is a Gaussian. For example, suppose we have two random variables $X, Y$ sampled from a Rademacher distribution (i.e., they take on values $\pm 1$ with equal probabilities). Each of these have mean $0$ and variance $1$. Then, the sum $Z = X + Y$ takes on values $\\{ -2, 0, 2 \\}$, with respective probabilities $\\{ 1/4, 1/2, 1/4 \\}$. $Z$ will then have mean $0$ and variance $2$ --- the same parameters we would expect for the sum of two Gaussians. Thus, we must first show that $Z$ is Gaussian distributed; then, we can find it's parameters by computing the moments.
-
-[^fn7]: From this, we see that a matrix $\A$ is diaongalizable if it is *square* and *nonsingular*. We see that it needs to be square since otherwise the notion of eigenvalues is not well-defined. This is because the eigenvalues are found by solving the characteristic equation $\det(\A - \lambda\I) = 0$, and which the determinant is only defined for square matrices. Moreover, $\A$ needs to be nonsingular so that the eigenvectors are linearly independent. In this case, the matrix $\U$ is nonsingular and hence invertible, allowing us to write $\A = \U\bLambda\U\inv$.
