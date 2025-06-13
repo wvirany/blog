@@ -4,7 +4,13 @@ title = 'Walter Virany'
 theme = 'theme'
 
 # Google analytics code
-googleAnalytics = "G-40CWX6Y06Y"
+# googleAnalytics = "G-40CWX6Y06Y"
+
+# Umami Analytics
+[params.umami]
+enable = true
+websiteId = "888cd9bd-9414-47db-bf14-252174c7e592"
+src = "https://cloud.umami.is/script.js"
 
 [taxonomies]
 tag = 'tags'
