@@ -77,10 +77,10 @@ unsafe = true
 
 # Giscus comments
 [params.giscus]
-enable = false
-repo = "your/repo"
-repoid = "id"
-category = "category"
-categoryid = "categoryId"
+enable = true
+repo = "wvirany/blog"
+repoid = "R_kgDOMs9-zQ"
+category = "Blog comments"
+categoryid = "DIC_kwDOMs9-zc4CrdIu"
 mapping = "pathname"
-theme = "preferred_color_scheme" 
+theme = "light"

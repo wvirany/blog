@@ -1,6 +1,6 @@
 ---
 title: "A spelled-out introduction to Gaussian processes"  
-date: "2025-05-28"  
+date: "2025-06-13"  
 summary: ""  
 description: ""  
 draft: true
