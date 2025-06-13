@@ -1,9 +1,9 @@
 ---
 title: "Some math behind the Gaussian distribution"  
-date: "2025-06-09"  
+date: "2025-06-13"  
 summary: ""  
 description: ""  
-draft: true
+draft: false
 toc: false  
 readTime: true  
 autonumber: false  
@@ -16,17 +16,13 @@ hideBackToTop: false
 <!-- 
 To Do:
 
-- Reread, correct errors
 - Fill in "short proofs", appendix (triangle inequality, sum/product rules)
-- Fix equation numbers
 - Finish references section
-- Nice ToC?
 - Double check resulting equations
 
 
 
 - Content:
-  - interpretation of moments
   - marginalization vs. conditioning
   - my approach: trying to do detailed derivations; other sources focus on intuition + visualization
   - Comment on frequent strategy of removing constants from sums in the exponent because they just become multiplicative scalars
@@ -63,7 +59,7 @@ To Do:
 
 Despite its ubiquity, I have frequently found myself in a state somewhere between *discomfort* and *panic* each time I am faced with the task of manipulating the Gaussian distribution, particularly in multiple dimensions. So, I've taken the opportunity to work through some detailed derivations involving the Gaussian.
 
-In this blog, I focus on the multivariate Gaussian distribution, beginning by reasoning about its shape and properties in high dimensions. Then, I derive some useful formulas such as conditioning, marginalization, and certain transformations.
+In this blog, I focus on the multivariate Gaussian distribution, beginning by reasoning about its shape and properties in high dimensions. Then, I derive some useful formulas such as conditioning, marginalization, and certain transformations. Many resources provide excellent discussions which focus on intuition and visualization behind the Gaussian distribution. My goal, however, is to provide detailed mathematical arguments which lead to common results.
 
 
 ## Properties
@@ -329,9 +325,9 @@ def generate_ellipse_points(e1, e2, q, n=100):
     points = np.vstack([y1, y2])
     return points
 
-def plot_ellipse(points, color='midnightblue', alpha=1, label=None):
+def plot_ellipse(points, color='midnightblue'):
     # Plot ellipse from 2xn points matrix
-    plt.plot(points[0], points[1], color=color, linewidth=1, alpha=alpha, label=label)
+    plt.plot(points[0], points[1], color=color, lw=1)
 ```
 
 The first function generates a $2 \times n$ matrix of points which fall on a given ellipse, and the second plots the corresponding ellipse. I'll use these to generate the ellipses in $y$-space, and transform them into $x$-space using the inverse transformation of $\eqref{2}$:
@@ -380,6 +376,23 @@ plt.show()
 <div id="fig1" class="figure">
    <img src="figures/ellipse_plot.png" alt="ellipse_plot.png" style="width:80%; margin-left:auto; margin-right:auto">
 </div>
+
+Note: to make this plot, I used the following `seaborn` configuration:
+
+```py
+import seaborn as sns
+
+sns.set_style("darkgrid",
+              {"axes.facecolor": ".95",
+               "axes.edgecolor": "#000000",
+               "grid.color": "#EBEBE7",
+               "font.family": "serif",
+               "axes.labelcolor": "#000000",
+               "xtick.color": "#000000",
+               "ytick.color": "#000000",
+               "grid.alpha": 0.4 })
+sns.set_palette('muted')
+```
 
 </p>
 </details>
@@ -600,13 +613,15 @@ $$
 \sum_{i=1}^d \u_i\u_i\T \prod_{k=1}^d \int \frac{1}{\sqrt{2\pi\lambda_k}} \exp \left( - \frac{y_k^2}{2\lambda_k} \right) y_i^2 dy_k,
 $$
 
-where I brought the normalization constant inside the product. The terms in the product for which $i \neq k$ are just univariate Gaussian, and hence normalize to $1$. Thus, the only term left in the product is
+where I brought the normalization constant inside the product. The terms in the product for which $i \neq k$ are just univariate Gaussian in terms of $y_k$, and hence normalize to $1$. Thus, the only term left in the product is
 
 $$
+\begin{align*}
 \int \frac{1}{\sqrt{2\pi\lambda_k}} \exp \left( - \frac{y_i^2}{2\lambda_i} \right) y_i^2 dy_i,
+\end{align*}
 $$
 
-which is just the expression for the second moment of a univariate Gaussian with mean $0$ and variance $\lambda_i$. In general, the second moment of a univariate Gaussian $\Norm(x \mid \mu, \sigma^2)$ is $\mu\^2 + \sigma^2$. Thus, we are left with
+which is just the expression for the second moment of $y_i$. In general, the second moment of a univariate Gaussian $\Norm(x \mid \mu, \sigma^2)$ is $\mu\^2 + \sigma^2$. Since the mean of $y_i$ is $0$ and the variance is $\lambda_i$, we are left with
 
 $$
 \begin{align}
@@ -620,7 +635,7 @@ So, we have that the first and second moments of the Gaussian are given by $\E[\
 
 ## Conditioning
 
-Now, suppose we have some random vector $\z \in \R^d$, specified by a Gaussian distribution:
+Now, suppose we have some random vector $\z \in \R^d$, specified by the following Gaussian distribution:
 
 $$
 \z \sim \Norm(\z \mid \bmu, \bSigma).
@@ -648,7 +663,7 @@ $$
 \end{pmatrix}.
 $$
 
-Note that since $\bSigma$ is symmetric, we have $\bSigma_{xx} = \bSigma_{xx}\T, \bSigma_{yy} = \bSigma_{yy}\T$, and $\bSigma_{xy} = \bSigma_{yx}\T$. It's also useful to define the precision matrix $\bLambda = \bSigma\inv$, and its partitioned form: [^fn3]
+Note that since $\bSigma$ is symmetric, we have $\bSigma_{xx} = \bSigma_{xx}\T, \bSigma_{yy} = \bSigma_{yy}\T$, and $\bSigma_{xy} = \bSigma_{yx}\T$. It's also useful to define the precision matrix $\bLambda = \bSigma\inv$ and its corresponding partitioned form: [^fn3]
 
 $$
 \bLambda = \begin{pmatrix}
@@ -668,7 +683,7 @@ p(\x, \y) &= p(\x \mid \y) \\, p(\y) \\\\[3pt]
 \end{align*}
 $$
 
-However, normalizing the resulting expression can be cumbersome. Instead, let's consider the quadratic form in the exponent of the joint distribution:
+However, integrating the RHS to normalize this expression can be cumbersome. Instead, let's consider the quadratic form in the exponent of the joint distribution:
 
 $$
 \begin{align}
@@ -688,7 +703,7 @@ $$
 &\qquad= -\frac{1}{2} (\x - \bmu_x)\T\bLambda_{xx} (\x - \bmu_x) - \frac{1}{2}(\x - \bmu_x)\T \bLambda_{xy} (\y - \bmu_y) \nonumber \\\\
 &\qquad\qquad - \frac{1}{2}(\y-\bmu_y)\T\bLambda_{yx} (\x - \bmu_x) - \frac{1}{2} (\y - \bmu_y)\T \bLambda_{yy} (\y - \bmu_y) \nonumber \\\\[10pt]
 &\qquad= -\frac{1}{2} (\x - \bmu_x)\T\bLambda_{xx} (\x - \bmu_x) - (\x-\bmu_x)\T\bLambda_{xy} (\y - \bmu_y) \nonumber \\\\
-&\qquad\qquad - \frac{1}{2} (\y - \bmu_y)\T \bLambda_{yy} (\y - \bmu_y).
+&\qquad\qquad - \frac{1}{2} (\y - \bmu_y)\T \bLambda_{yy} (\y - \bmu_y). \label{7}
 \end{align}
 $$
 
@@ -700,23 +715,23 @@ $$
 
 I'll repeatedly use this fact in the following calculations to combine cross terms.
 
-Evaluating the conditional $p(\x \mid \y)$ involves fixing $\y$ and treating this as a function of $\x$. Then, since the expression in $(6)$ is a quadratic function of $\x$, the resulting distribution $p(\x \mid \y)$ will also take the form of a Gaussian. So, our goal is to find the mean $\bmu_{x\mid y}$ and covariance $\bSigma_{x\mid y}$ which specify this distribution. To do so, note that in general, we can write the exponent of a Gaussian as
+Evaluating the conditional $p(\x \mid \y)$ involves fixing $\y$ and treating this as a function of $\x$. Then, since the expression in $\eqref{7}$ is a quadratic function of $\x$, the resulting distribution $p(\x \mid \y)$ will also take the form of a Gaussian. So, our goal is to find the mean $\bmu_{x\mid y}$ and covariance $\bSigma_{x\mid y}$ which specify this distribution. To do so, note that in general, we can write the exponent of a Gaussian as
 
 $$
-\begin{equation}\label{eq:generalgaussian}
+\begin{equation}\label{8}
 -\frac{1}{2}(\z - \bmu\)\T \bSigma\inv (\z - \bmu\) = -\frac{1}{2}\z\T\bSigma\inv\z + \z\T\bSigma\inv\bmu\ + c,
 \end{equation}
 $$
 
-where $c$ denotes all the terms independent of $\z$. Thus, if we can rewrite $(6)$ in this form, we can identify the coefficients of the quadratic and linear terms in $\x$ as the mean and covariance of $p(\x \mid \y)$. This may not seem clear at first, but I think going through the process will illuminate things.
+where $c$ denotes all the terms independent of $\z$. Thus, if we can rewrite $\eqref{7}$ in this form, then we can identify the coefficients of the quadratic and linear terms in $\x$ and solve for the parameters which we are interested in. This may not seem clear at first, but I think going through the process will illuminate things.
 
-Expanding $(6)$ gives
+Expanding $\eqref{7}$ gives
 
 $$
 -\frac{1}{2} \x\T\bLambda_{xx} \x + \x\T\bLambda_{xx} \bmu_x - \x\T\bLambda_{xy} \y + \x\T\bLambda_{xy} \bmu_y + c,
 $$
 
-where $c$ again denotes all terms which do not depend on $\x$. Equating this to the general form as in the right-hand side of $\eqref{eq:generalgaussian}$, we have
+where $c$ again denotes all terms which do not depend on $\x$. Equating this to the general form on the RHS of $\eqref{8}$, we have
 
 $$
 -\frac{1}{2} \x\T\bLambda_{xx} \x + \x\T\bLambda_{xx} \bmu_x - \x\T\bLambda_{xy} \y + \x\T\bLambda_{xy} \bmu_y = -\frac{1}{2}\x\T\bSigma_{x\mid y}\inv \x + \x\T\bSigma_{x\mid y}\inv \bmu_{x \mid y}.
@@ -725,7 +740,7 @@ $$
 Immediately, we can equate the quadratic terms to see that
 
 $$
-\begin{equation}
+\begin{equation}\label{9}
 \bSigma_{x\mid y}\inv = \bLambda_{xx}.
 \end{equation}
 $$
@@ -742,15 +757,15 @@ $$
 \bSigma_{x\mid y}\inv \bmu_{x\mid y} = \bLambda_{xx} \bmu_x - \bLambda_{xy} (\y - \bmu_y),
 $$
 
-or, using $(8)$:
+or, left-multiplying by $\Lambda_{xx}$ and using $\eqref{9}$:
 
 $$
-\begin{equation}
+\begin{equation}\label{10}
 \bmu_{x\mid y} = \bmu_x - \bLambda_{xx}\inv\bLambda_{xy} (\y - \bmu_y).
 \end{equation}
 $$
 
-Here, we've expressed the quantities $\bmu_{x\mid y}$ and $\bSigma_{x\mid y}$ in terms of $\bLambda$. Instead, we can express them in terms of $\bSigma$. To do so, we'll use the matrix inversion identity:
+Here, we've expressed the quantities $\bmu_{x\mid y}$ and $\bSigma_{x\mid y}$ in terms of $\bLambda$. Instead, we can express them in terms of $\bSigma$. To do so, we'll use the following identity for taking the inverse of a partitioned matrix:
 
 $$
 \begin{pmatrix}
@@ -762,7 +777,7 @@ $$
 \end{pmatrix},
 $$
 
-where $\M$ is the [Schur complement](#appendix), defined
+where $\M$ is the [*Schur complement*](#appendix), defined
 
 $$
 \M = (\A - \B\D\inv\bC)\inv.
@@ -772,13 +787,12 @@ Then, since
 
 $$
 \begin{pmatrix}
-\bLambda_{xx} & \bLambda_{xy} \\\\
-\bLambda_{yx} & \bLambda_{yy}
-\end{pmatrix}\inv = 
-\begin{pmatrix}
 \bSigma_{xx} & \bSigma_{xy} \\\\
 \bSigma_{yx} & \bSigma_{yy}
-\end{pmatrix},
+\end{pmatrix}\inv = \begin{pmatrix}
+\bLambda_{xx} & \bLambda_{xy} \\\\
+\bLambda_{yx} & \bLambda_{yy}
+\end{pmatrix}
 $$
 
 we have
@@ -790,7 +804,7 @@ $$
 \end{align*}
 $$
 
-Plugging these expressions into $(8)$ and $(9)$ gives
+Plugging these expressions into $\eqref{9}$ and $\eqref{10}$ gives
 
 $$
 \bSigma_{x\mid y} = \bSigma_{xx} - \bSigma_{xy}\bSigma_{yy}\inv\bSigma_{yx}
@@ -816,21 +830,21 @@ $$
 
 ## Marginalization
 
-Now, given the joint distribution $p(\x, \y)$ as above, suppose we wish to find the marginal distribution
+I previously showed how to compute the conditional distribution $p(\x \mid \y)$ given the joint distribution $p(\x, \y)$. Instead, suppose we wish to find the marginal distribution
 
 $$
-\begin{equation}
+\begin{equation}\label{13}
 p(\x) = \int p(\x, \y) d\y.
 \end{equation}
 $$
 
-Our goal, then, is to integrate out $\y$ to obtain a function of $\x$. Then, we can normalize the resulting function of $\x$ to obtain a valid probability distribution. To do so, let's again consider the quadratic form in the exponent given by $(6)$. First, we collect all terms which depend on $\y$:
+Our goal is then to integrate over $\y$ to obtain a function solely dependent on $\x$. Then, we can normalize the resulting function of $\x$ to obtain a valid probability distribution. To do so, let's again consider the quadratic form in the exponent given by $\eqref{7}$. First, we collect all terms which depend on $\y$:
 
 $$
 \begin{align}
 &- (\x - \bmu_x)\T\bLambda_{xy} (\y - \bmu_y) - \frac{1}{2} (\y - \bmu_y)\T\bLambda_{yy} (\y - \bmu_y) \nonumber \\\\[2pt]
 &\qquad= -\frac{1}{2} \y\T \bLambda_{yy} \y + \y\T\bLambda_{yy} \bmu_y - \y\T \bLambda_{yx} (\x - \bmu_x) \nonumber \\\\[2pt]
-&\qquad= -\frac{1}{2}\y\T \bLambda_{yy} \y + \y\T \m,
+&\qquad= -\frac{1}{2}\y\T \bLambda_{yy} \y + \y\T \m, \label{14}
 \end{align}
 $$
 
@@ -840,21 +854,19 @@ $$
 \m = \bLambda_{yy} \bmu_y - \bLambda_{yx} (\x - \bmu_x).
 $$
 
-By [completing the square](#appendix), we can write $(13)$ as
+By [completing the square](#appendix), we can write $\eqref{14}$ as
 
 $$
 -\frac{1}{2} (\y - \bLambda_{yy}\inv\m)\T \bLambda_{yy} (\y - \bLambda_{yy}\inv\m) + \frac{1}{2}\m\T\bLambda_{yy}\inv \m.
 $$
 
-Note that $\m$ does not depend on $\y$; however, it does depend on $\x$. Now, we're able to factor the integral in $(11)$ as
+Note that $\m$ does not depend on $\y$; however, it does depend on $\x$. Now, we're able to factor the integral in $\eqref{13}$ as
 
 $$
 \exp\big( g(\x) \big)\int \exp \left\\{ -\frac{1}{2} (\y - \bLambda_{yy}\inv\m)\T \bLambda_{yy} (\y - \bLambda_{yy}\inv\m) \right\\} d\y,
 $$
 
-where $g(\x)$ contains all the remaining terms which do not depend on $\y$. This integral is now easy to compute, since it is just an unnormalized Gaussian and will evaluate to the reciprocal of the corresponding normalization factor. Thus, the marginal distribution $p(\x)$ will have the exponential form given by $g(\x)$, and we can perform the same analysis by inspection to retrieve the values for the corresponding parameters $\bmu_x$ and $\bSigma_x$.
-
-To acquire an expression for $g(\x)$, we consider all the remaining terms:
+where $g(\x)$ contains all the remaining terms which do not depend on $\y$. This integral is now easy to compute, since it is just an unnormalized Gaussian and will evaluate to the reciprocal of the corresponding normalization factor. Thus, the marginal distribution $p(\x)$ will take the form of the remaining exponential function in terms of $g(\x)$ times some constant. Then, to acquire an expression for $g(\x)$, we consider all the remaining terms:
 
 $$
 \begin{align*}
@@ -873,13 +885,13 @@ g(\x) &= -\frac{1}{2}\x\T \left( \bLambda_{xx} + \bLambda_{xy}\bLambda_{yy}\inv\
 \end{align*}
 $$
 
-where we have
+recalling that
 
 $$
 \bSigma_{xx} = \left( \bLambda_{xx} + \bLambda_{xy}\bLambda_{yy}\inv\bLambda_{yx} \right)\inv
 $$
 
-from the matrix inversion formula. Comparing this to our general form in $(7)$, we have the following expressions for the mean and covariance of the marginal $p(\x)$:
+from the matrix inversion formula. We see that this takes the form of a Gaussian, and comparing this to our general form in $\eqref{8}$, we have the following expressions for the mean and covariance of the marginal distribution $p(\x)$:
 
 $$
 \begin{align}
@@ -888,12 +900,12 @@ $$
 \end{align}
 $$
 
-That is, the mean and covariance of the marginal distribution are found by simply taking the "slices" of the partitioned matrices from the joint distribution which correspond to the marginal variable.
+Thus, the mean and covariance of the marginal distribution are found by simply taking the "slices" of the partitioned matrices from the joint distribution which correspond to the marginal variable.
 
 
 ## Transformations
 
-Here I derive the resulting expressions for the new pdfs of the random variables which are the result of several different transformations of Gaussian random variables. Interestingly, we'll see that the Gaussian is closed under a variety of transformations.
+Here I derive the expressions for the new pdfs of the random variables which result from several different transformations of Gaussian random variables. Interestingly, we'll see that the Gaussian is closed under a variety of transformations.
 
 ### Affine transformation
 
@@ -905,7 +917,7 @@ $$
 p(\y) = p(\x) \bigg| \frac{\partial\x}{\partial\y} \bigg|.
 $$
 
-Since this is an affine transformation, the Jacobian $\lvert \partial\x / \partial\y \rvert$ will be a constant, and hence is just a scaling factor. Thus, $p(\y)$ must take the same forma as $p(\x)$, i.e., a Gaussian.
+Since this is an affine transformation, the Jacobian $\lvert \partial\x / \partial\y \rvert$ will be a constant, and hence is just a scaling factor. Thus, $p(\y)$ must take the same form as $p(\x)$, i.e., a Gaussian.
 
 Then, we can find the expressions for the mean and covariance of $p(\y)$. The mean is given by
 
@@ -926,15 +938,31 @@ $$
 \E[\y\y\T] &= \E\left[ (\A\x+\b) (\A\x+\b)\T \right] \\\\
 &= \E[\A\x (\A\x)\T + 2 \b\T\A\x + \b\b\T] \\\\
 &= \A\E[\x\x\T]\A\T + 2\b\A\E[\x] + \b\b\T \\\\
-&= \A (\bSigma + \bmu\bmu\T) \A\T
+&= \A (\bSigma + \bmu\bmu\T) \A\T + 2\b\T\A\bmu + \b\b\T \\\\
+&= \A\bSigma\A\T + \A\bmu (\A\bmu)\T + 2\b\T\A\bmu + \b\b\T.
+\end{align*}
+$$
+
+Thus,
+
+$$
+\begin{align*}
+\bSigma_y &= \A\bSigma\A\T + \A\bmu (\A\bmu)\T + 2\b\T\bmu + \b\b\T - (\A\bmu + \b)(\A\bmu + \b)\T \\\\
+&= \A\bSigma\A\T.
 \end{align*}
 $$
 
 
+Thus, we have the result:
+
+$$
+p(\y) = \Norm\left( \y \mid \A\bmu + \b, \A\bSigma\A\T \right).
+$$
+
 
 ### Sum of Gaussians
 
-The derivation for the sum of two Gaussian random variables is quite a bit more involved. For this, I'll do the derivation for the univariate case, then generalize to multiple dimensions.
+The derivation for the sum of two Gaussian random variables is quite a bit more involved. For this, I'll perform the derivation for the univariate case, then generalize the result to multiple dimensions.
 
 To start, note that the density function for the sum of any two independent random variables is given by their convolution. That is, suppose $X$ and $Y$ are independent random variables, with $X \sim f_x(x)$, and $Y \sim f_Y(y)$. Let $Z = X + Y$. Then,
 
@@ -942,19 +970,21 @@ $$
 f_Z(z) = \int_{-\infty}^{\infty} f_X(x)f_Y(z-x) dx.
 $$
 
-To see this, consider the cumulative distribution function of $Z$:
+To see this, consider the cdf of $Z$:
 
 $$
+\begin{equation}\label{17}
 F_Z(z) = P(Z \leq z) = P(X + Y \leq z) = P(\\{(x, y) : x + y \leq z\\}).
+\end{equation}
 $$
 
-That is, for any point $(x, y)$, this is given by the probability that this point will have a sum less than or equal to $z$. Note that in our case, $x$ and $y$ are Gaussian-distributed, so $(x,y)$ can be any point in $\R^2$. In other words, the probability that the sampled point falls below the line $y = z - x$:  
+That is, for any point $(x, y)$, the cdf is given by the probability that this point will have a sum less than or equal to some value $z$. In other words, the probability that the sampled point falls below the line $y = z - x$:  
 
 <div id="fig2" class="figure">
    <img src="figures/line.svg" alt="Line: y = z - x" style="width:60%; margin-left:auto; margin-right:auto">
 </div>
 
-If we take $x \in (-\infty, \infty)$, then $y \in (-\infty, z - x)$, so this probability is given by the following integral: [^fn5]
+Note that in our case, $x$ and $y$ are Gaussian-distributed, so $(x,y)$ can be any point in $\R^2$. To find the region under this line, we can take $x \in (-\infty, \infty)$ and $y \in (-\infty, z - x)$, so the probability in $\eqref{17}$ is given by the following integral: [^fn5]
 
 $$
 \begin{align*}
@@ -986,26 +1016,26 @@ f_Z(z) &= \int_{-\infty}^\infty f_X(x) f_Y(u) dx \\\\
 \end{align*}
 $$
 
-This is exactly the convolution between the functions $f_X, f_Y$!
+This is exactly the convolution between the functions $f_X$ and $f_Y$!
 
-Now, to compute this convolution, we could write out the expressions for the two Gaussian functions, and it would essentially be a process of completing the square in the exponents as before.
-
-However, an (arguably more *fun*) alternative is to use the convolution theorem --- this makes use of the fact that the Fourier transform of the convolution between two functions is just the product of the Fourier transform of each function. So, if we can find the Fourier transform for a Gaussian function, then we can simply perform multiplication in Fourier space, then transform back to real space using the inverse Fourier transform:
+Now, to compute this convolution, we could write out the expressions for the two Gaussian functions, and it would essentially be a process of completing the square in the exponents as before. However, an (arguably more *fun*) alternative is to use the convolution theorem --- this makes use of the fact that the Fourier transform of the convolution between two functions is just the product of the Fourier transform of each function. So, if we can find the Fourier transform for a Gaussian function, then we can simply perform multiplication in Fourier space, then transform back to real space using the inverse Fourier transform. That is,
 
 $$
 f \ast g = \mathcal{F}\inv \\{ F(\omega) G(\omega) \\},
 $$
 
-where $F$ and $G$ are the Fourier transforms of $f$ and $g$, respectively --- this is the convolution theorem.
+where $F$ and $G$ are the Fourier transforms of $f$ and $g$, respectively.
 
 To start, I'll state what's known as the "Fourier transform pair":
 
 $$
-\begin{align}
-f(x) &= \frac{1}{2\pi} \int_{-\infty}^\infty F(\omega)e^{i\omega x}d\omega, \label{16}\tag{16} \\\\
-F(\omega) &= \int_{-\infty}^\infty f(x)e^{-i\omega x}dx.
-\end{align}
+\begin{align*}
+F(\omega) &= \int_{-\infty}^\infty f(x)e^{-i\omega x}dx \\\\
+f(x) &= \frac{1}{2\pi} \int_{-\infty}^\infty F(\omega)e^{i\omega x}d\omega.
+\end{align*}
 $$
+
+These define the Fourier transform and the inverse Fourier transform, respectively.
 
 Now, suppose our function is a general Gaussian with mean $\mu$ and covariance $\sigma^2$:
 
@@ -1041,7 +1071,9 @@ $$
 F(\omega) = \frac{1}{\sqrt{\pi}} \exp \left( - \frac{\sigma^2\omega^2}{2} - \mu i\omega \right) \underbrace{\int_{-\infty}^\infty\exp \Biggl\\{ - \left( u + \sqrt{\frac{\sigma^2}{2}}i\omega \right)^2 \Biggr\\} du}_I.
 $$
 
-So, we'd like to evaluate the integral above, which I'll denote $I$. To do so, I'll use a method from complex analysis known as contour integration (see the [references](#references) for a resource on contour integration).[^fn6] Consider the following contour in the complex plane, which I'll denote $C$:
+So, we'd like to evaluate the integral above, which I'll denote $I$. To do so, I'll use a method from complex analysis known as contour integration. However, I'll point out that, while fascinating, this is just a method of integration for those who are curious; it is not the primary focus of my blog, which is to better understand the Gaussian distribution (skip to the [result](#19)).
+
+Proceeding with the integral, consider the following contour in the complex plane, which I'll denote $C$:
 
 <div id="fig3" class="figure">
    <img src="figures/rectangular_contour.svg" alt="rectangular_contour.svg" style="width:80%; margin-left:15%;">
@@ -1074,7 +1106,7 @@ $$
 \biggl| \int_{-a}^a e^{-x^2}dx - \int_{-a}^a e^{-(x+ib)^2}dx \biggr| = \biggl| \int_0^be^{-(-a+iy)^2}dy - \int_0^be^{-(a+iy)^2}dy \biggr|.
 $$
 
-Now, using the [triangle inequality](#appendix), we have
+From the [triangle inequality](#appendix), we have
 
 $$
 \biggl| \int_{-a}^a e^{-x^2}dx - \int_{-a}^a e^{-(x+ib)^2}dx \biggr| \leq \int_0^b \lvert e^{-(-a+iy)^2} \rvert dy + \int_0^b \lvert e^{-(a+iy)^2}\rvert dy.
@@ -1083,15 +1115,15 @@ $$
 Then, examining the term on the RHS:
 
 $$
-\begin{align*}
-&\int_0^b \lvert e^{-(-a+iy)^2} \rvert dy + \int_0^b \lvert e^{-(a+iy)^2}\rvert dy\\\\
-&= \int_0^b \lvert e^{-a^2 + 2aiy + y^2} \rvert dy + \int_0^b \lvert e^{-a^2 - 2aiy + y^2} \rvert dy \\\\
-&= e^{-a^2} \left( \int_0^b e^{y^2} \underbrace{\lvert e^{2aiy} \rvert}_1 dy + \int_0^b e^{y^2} \underbrace{\lvert e^{-2aiy} \rvert}_1 dy \right) \\\\
-&= 2e^{-a^2} \int_0^b e^{y^2} dy.
-\end{align*}
+\begin{align}
+&\int_0^b \lvert e^{-(-a+iy)^2} \rvert dy + \int_0^b \lvert e^{-(a+iy)^2}\rvert dy \nonumber \\\\
+&= \int_0^b \lvert e^{-a^2 + 2aiy + y^2} \rvert dy + \int_0^b \lvert e^{-a^2 - 2aiy + y^2} \rvert dy \nonumber \\\\
+&= e^{-a^2} \left( \int_0^b e^{y^2} \underbrace{\lvert e^{2aiy} \rvert}_1 dy + \int_0^b e^{y^2} \underbrace{\lvert e^{-2aiy} \rvert}_1 dy \right) \nonumber \\\\
+&= 2e^{-a^2} \int_0^b e^{y^2} dy. \label{18}
+\end{align}
 $$
 
-Now, using integration by parts, we can show that
+Using integration by parts, we can show that
 
 $$
 \int_0^b e^{y^2}dy = be^{b^2} - 2\int_0^b y^2e^{y^2}dy.
@@ -1103,19 +1135,19 @@ $$
 \int_0^be^{y^2}dy \leq be^{b^2},
 $$
 
-and hence is bounded by some constant in terms of $b$. Thus, when we take the limit as $a \to \infty$, this term will vanish, and we are left with
+and hence is bounded by some constant in terms of $b$. Thus, when we take the limit as $a \to \infty$, the RHS of $\eqref{18}$ will vanish, and we are left with
 
 $$
 \biggl| \int_{-\infty}^\infty e^{-x^2}dx - \int_{-\infty}^\infty e^{-(x+ib)^2}dx \biggr| \leq 0.
 $$
 
-Since the term on the LHS is nonnegative, it must be zero, hence
+Since the term on the LHS of this inequality is nonnegative, it must be equal to zero, hence
 
 $$
 \int_{-\infty}^\infty e^{-(x+ib)^2}dx = \int_{-\infty}^\infty e^{-x^2}dx.
 $$
 
-The term on the LHS takes the exact form of $I$ --- independent of $b$! Thus,
+The term on the LHS takes the exact form of $I$ --- moreover, it's independent of $b$! Thus,
 
 $$
 I = \int_{-\infty}^\infty e^{-x^2}dx.
@@ -1144,7 +1176,9 @@ $$
 Thus, $I = \sqrt{\pi}$. Plugging this back into our expression for the Fourier transform gives
 
 $$
-F(\omega) = \exp \left( -\frac{\sigma^2\omega^2}{2} \right)\exp \left( -\mu i\omega \right).
+\begin{equation}
+F(\omega) = \exp \left( -\frac{\sigma^2\omega^2}{2} \right)\exp \left( -\mu i\omega \right). \label{19}
+\end{equation}
 $$
 
 This is the general form for the Fourier transform of a Gaussian with mean $\mu$ and variance $\sigma^2$. Now, we might recall our original goal: to compute the pdf of $Z = X + Y$, where 
@@ -1159,7 +1193,7 @@ $$
 f_Z(z) = \int_{-\infty}^\infty f_X(x) f_Y(z-x)dx.
 $$
 
-Taking the Fourier transform,
+Taking the Fourier transform:
 
 $$
 \begin{align*}
@@ -1169,13 +1203,13 @@ F_Z(\omega) &= F_X(\omega)F_Y(\omega) \\\\
 \end{align*}
 $$
 
-We see this takes the form as a Fourier transform of a Gaussian with mean $\mu_X + \mu_Y$ and variance $\sigma_X^2 + \sigma_Y^2$, hence
+We see this takes the form of a Fourier transform of a Gaussian with mean $\mu_X + \mu_Y$ and variance $\sigma_X^2 + \sigma_Y^2$, hence
 
 $$
 f_Z(z) = \Norm(\mu_X + \mu_Y, \sigma_X^2 + \sigma_Y^2).
 $$
 
-Thus, the sum of two Gaussians results in another Gaussian, whose parameters are the sums of those of each individual Gaussian.
+Thus, the sum of two Gaussians results in another Gaussian whose parameters are the sums of the originals.
 
 Now, I will argue that this holds true for multivariate Gaussians as well. Suppose $\x, \y \in \R^d$ are Gaussian-distributed random vectors, with $\x \sim \Norm(\bmu_X, \bSigma_X)$ and $\y \sim \Norm(\bmu_Y, \bSigma_Y)$, and let $\z = \x + \y$. The pdf of $\z$ is still given by the convolution:
 
@@ -1183,7 +1217,7 @@ $$
 f_Z(\z) = \int_{\R^d} f_X(\x)f_Y(\z - \x)d\x.
 $$
 
-By expanding this integral, we can show that it takes the general exponential-quadratic form of a multivariate Gaussian; however, I'll avoid doing this as it is very similar to the derivations from previous sections. Then, to find the parameters of this distribution we can compute the first and second moments of $\z$: [^fn7]
+By expanding this integral, we can show that it takes the general exponential-quadratic form of a multivariate Gaussian; however, I'll avoid doing this as it is very similar to the derivations from previous sections. Then, to find the parameters of this distribution we can compute the first and second moments of $\z$: [^fn6]
 
 $$
 \E[\z] = \E[\x + \y] = \E[\x] + \E[\y] = \bmu_X + \bmu_Y,
@@ -1213,17 +1247,20 @@ Thus, we see that $\z \sim \Norm\left( \bmu_X + \bmu_Y, \bSigma_X + \bSigma_Y \r
 
 ## References
 
-The content of this post largely follows section 2.3 of Bishop's *Pattern Recognition and Machine Learning*. I also found myself frequently cross-referencing Murphy's *Probabilistic Machine Learning: An Introduction*, as well as using this for some of the mathematical concepts, of which the important ones can be found detailed in the appendix below.
+The content of this post largely follows section 2.3 of Bishop's *Pattern Recognition and Machine Learning*. I also found myself frequently cross-referencing Murphy's *Probabilistic Machine Learning: An Introduction*, as well as using this for some of the mathematical concepts which I've included in the [Appendix](#appendix) below.
 
 For the discussion on the sum of two Gaussians, the convolution operation, and the Fourier transform of the Gaussian, I referenced the following:
 
-* [Wikipedia]() --- wikipedia!
-* [This website](https://math.libretexts.org/Bookshelves/Differential_Equations/Introduction_to_Partial_Differential_Equations_(Herman)/09%3A_Transform_Techniques_in_Physics/9.06%3A_The_Convolution_Operation) --- This gives a great tutorial on the convolution operation and also shows how to compute the convolution of two zero-mean Gaussians
-* [This guy's notes](https://www.ee.iitb.ac.in/~belur/ee210/current-tutorials-quizzes/Kenneth-Zeger-UCSD-Gaussian-polar-coordinate.pdf) --- this is a nice tutorial on taking the Fourier transform of a zero-mean Gaussian.
-* [Complex textbook]() --- this is the main text I used for complex analysis; chapter 4 deals with contour integration as well as the Fourier transform.
+* [LibreTexts](https://math.libretexts.org/Bookshelves/Differential_Equations/Introduction_to_Partial_Differential_Equations_(Herman)/09%3A_Transform_Techniques_in_Physics/9.06%3A_The_Convolution_Operation) --- This gives a great tutorial on the convolution operation and also shows how to compute the convolution of two zero-mean Gaussians.
+* [This guy's notes](https://www.ee.iitb.ac.in/~belur/ee210/current-tutorials-quizzes/Kenneth-Zeger-UCSD-Gaussian-polar-coordinate.pdf) --- this is a nice tutorial on performing the integral necessary to take the Fourier transform of a zero-mean Gaussian.
+* [Ablowitz & Foxas](https://ftfsite.ru/wp-content/files/tfkp_endlish_2.2.pdf) --- This is the main text I used for complex analysis; chapter 4 deals with contour integration as well as the Fourier transform.
 
-However, I filled in a few of the gaps, and generalized the results for the Fourier transform of the Gaussian to a general Gaussian with nonzero mean.
+However, I added some details to the derivation and generalized the results for the Fourier transform of the Gaussian to a general Gaussian with nonzero mean.
 
+For more intuition behind the Gaussian distribution, I cannot recommend the following videos by 3Blue1Brown highly enough:
+
+* [Convolutions | Why X+Y in probability is a beautiful mess](https://youtu.be/IaSGqQa5O-M?si=g2pFPiZIvtl_eWT8)
+* [A pretty reason why Gaussian + Gaussian = Gaussian](https://youtu.be/d_qvLDhkg00?si=nx-3tQK9SMjjouNG)
 
 ## Appendix
 
@@ -1252,7 +1289,7 @@ However, I filled in a few of the gaps, and generalized the results for the Four
   \end{equation}
   $$
 
-  In this case, $\A$ is *diagonalizable*. [^fn8]
+  In this case, $\A$ is *diagonalizable*. [^fn7]
 
   Furthermore, if $\A$ is *real* and *symmetric*, then the eigenvalues of $\A$ are real, and the corresponding eigenvectors are orthonormal, i.e.
 
@@ -1347,6 +1384,17 @@ However, I filled in a few of the gaps, and generalized the results for the Four
 <details>
   <summary>Sum and product rules of probability</summary>
   <p>
+  The sum and product rules for two continuous random variables $x$ and $y$ can be succinctly stated as follows:
+
+  $$
+  \begin{align*}
+  p(x) &= \int p(x, y) dy, \\\\
+  p(x, y) &= p(x \mid y)p(y).
+  \end{align*}
+  $$
+
+  For more details on how these are derived, see [Bishop (2006)](#references), section 1.2.1.
+
   </p>
 </details>
 
@@ -1363,7 +1411,7 @@ However, I filled in a few of the gaps, and generalized the results for the Four
   \end{pmatrix},
   $$
 
-  and we'd like to compute $\M\inv$. First, we can diagonalize the matrix as follows:
+  and we'd like to compute $\M\inv$. To do so, we'll diagonalize the matrix as follows:
 
   $$
   \begin{pmatrix}
@@ -1379,7 +1427,7 @@ However, I filled in a few of the gaps, and generalized the results for the Four
   \end{pmatrix},
   $$
 
-  where I've defined the *Schur complement*
+  where I've expressed the result in terms of the *Schur complement*:
 
   $$
   \M/\D = \A - \B\D\inv\bC.
@@ -1446,8 +1494,8 @@ However, I filled in a few of the gaps, and generalized the results for the Four
   -\D\inv\bC & \I
   \end{pmatrix}
   \begin{pmatrix}
-  \M /\D & \zero \\\\
-  \zero & \D
+  (\M /\D)\inv & \zero \\\\
+  \zero & \D\inv
   \end{pmatrix}
   \begin{pmatrix}
   \I & -\B\D\inv \\\\
@@ -1460,6 +1508,8 @@ However, I filled in a few of the gaps, and generalized the results for the Four
   \end{align*}
   $$
 
+  This gives a general formula for finding the inverse of a partitioned matrix.
+  
   Alternatively, we could have decomposed the matrix $\M$ in terms of $\A$, giving the Schur complement with respect to $\A$:
 
   $$
@@ -1522,6 +1572,11 @@ However, I filled in a few of the gaps, and generalized the results for the Four
 <details>
   <summary>Triangle inequality</summary>
   <p>
+  The triangle inequality for two complex numbers $z, w \in \C$ is given by
+  $$
+  \lvert z + w \rvert \leq \lvert z \rvert + \lvert w \rvert.
+  $$
+  This generalizes to sums over more than two variables, or even integrals, as we have used.
   </p>
 </details>
 
@@ -1537,7 +1592,7 @@ $$
 
 [^fn2]: Note that since $\U$ is an orthogonal matrix, a linear transformation defined by $\U$ preserves the length of the vector which it transforms, and thus is either a rotation, reflection, or a combination of both.
 
-[^fn3]: Most literature notation uses $\bLambda$ for the precision matrix. Not that we have overdefined $\bLambda$, since it also refers to the matrix containing the eigenvalues of $\bSigma$ in our definition for the eigenvalue decomposition. However, for the rest of this blog, $\bLambda$ will refer to the precision matrix.
+[^fn3]: Most literature uses $\bLambda$ for the precision matrix. Note that we have overdefined $\bLambda$, since it also refers to the diagonal matrix containing the eigenvalues of $\bSigma$ in our definition for the eigenvalue decomposition. However, for the rest of this blog, $\bLambda$ will refer to the precision matrix.
 
 [^fn4]: To see this, consider the product between two vectors $\a \in \R^m$ and $\b \in \R^n$ defined by $\a\T\A\b$ for some matrix $\A \in \R^{m \times n}$. Then, since the resulting product is a scalar, we have $\a\T\A\b  = \b\T\A\T\a$.
 
@@ -1548,10 +1603,8 @@ f_Z(z) &= \int_{-\infty}^\infty \left( \int_{-\infty}^{z-y} f_X(x)f_Y(y) dx \rig
 &= \int_{-\infty}^\infty f_X(z-y)f_Y(y)dy
 \end{align*}
 $$
-It can be shown, however, it is fairly straightforward to show that the convolution is commutative, i.e., $f * g = g * f$.
+It is fairly straightforward to show, however, that the convolution is commutative, i.e., $f * g = g * f$, so this would ultimately yield the same result.
 
-[^fn6]: I'll point out that, while fascinating, this is just a method of integration for those who are curious; it is not the primary focus of my blog, which is to better understand the Gaussian distribution.
+[^fn6]: Note that, in general, finding the first and second moments is not enough to establish that the distribution is a Gaussian. For example, suppose we have two random variables $X, Y$ sampled from a Rademacher distribution (i.e., they take on values $\pm 1$ with equal probabilities). Each of these have mean $0$ and variance $1$. Then, the sum $Z = X + Y$ takes on values $\\{ -2, 0, 2 \\}$, with respective probabilities $\\{ 1/4, 1/2, 1/4 \\}$. $Z$ will then have mean $0$ and variance $2$ --- the same parameters we would expect for the sum of two Gaussians. Thus, we must first show that $Z$ is Gaussian distributed; then, we can find it's parameters by computing the moments.
 
-[^fn7]: Note that, in general, finding the first and second moments is not enough to establish that the distribution is a Gaussian. For example, suppose we have two random variables $X, Y$ sampled from a Rademacher distribution (i.e., they take on values $\pm 1$ with equal probabilities). Each of these have mean $0$ and variance $1$. Then, the sum $Z = X + Y$ takes on values $\\{ -2, 0, 2 \\}$, with respective probabilities $\\{ 1/4, 1/2, 1/4 \\}$. $Z$ will then have mean $0$ and variance $2$ --- the same parameters we would expect for the sum of two Gaussians. Thus, we must first show that $Z$ is Gaussian distributed; then, we can find it's parameters by computing the moments.
-
-[^fn8]: From this, we see that a matrix $\A$ is diaongalizable if it is *square* and *nonsingular*. We see that it needs to be square since otherwise the notion of eigenvalues is not well-defined. This is because the eigenvalues are found by solving the characteristic equation $\det(\A - \lambda\I) = 0$, and which the determinant is only defined for square matrices. Moreover, $\A$ needs to be nonsingular so that the eigenvectors are linearly independent. In this case, the matrix $\U$ is nonsingular and hence invertible, allowing us to write $\A = \U\bLambda\U\inv$.
+[^fn7]: From this, we see that a matrix $\A$ is diaongalizable if it is *square* and *nonsingular*. We see that it needs to be square since otherwise the notion of eigenvalues is not well-defined. This is because the eigenvalues are found by solving the characteristic equation $\det(\A - \lambda\I) = 0$, and which the determinant is only defined for square matrices. Moreover, $\A$ needs to be nonsingular so that the eigenvectors are linearly independent. In this case, the matrix $\U$ is nonsingular and hence invertible, allowing us to write $\A = \U\bLambda\U\inv$.
