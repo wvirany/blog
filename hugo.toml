@@ -90,3 +90,6 @@ category = "Blog comments"
 categoryid = "DIC_kwDOMs9-zc4CrdIu"
 mapping = "pathname"
 theme = "noborder_light"
+
+# Set to show future posts
+# buildFuture = true
