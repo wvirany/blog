@@ -13,22 +13,6 @@ showTags: false
 hideBackToTop: false
 ---
 
-<!-- 
-To Do:
-
-- Fill in "short proofs", appendix (triangle inequality, sum/product rules)
-- Finish references section
-- Double check resulting equations
-
-
-
-- Content:
-  - marginalization vs. conditioning
-  - my approach: trying to do detailed derivations; other sources focus on intuition + visualization
-  - Comment on frequent strategy of removing constants from sums in the exponent because they just become multiplicative scalars
-  - In "moments": show the formula for the second moment of a univariate Gaussian, and reference it properly (whether it's a footnote or appendix)
--->
-
 <style>
   details {
     border: 1px solid black;
@@ -134,7 +118,7 @@ y_i = \u_i\T(\x - \bmu).
 \end{equation*}
 $$
 
-The set $\\{y_i\\}$ can then be seen as a transformed coordinate system, shifted by $\bmu$ and rotated by $\u_i$.[^fn2] Alternatively, we can write this as a vector:
+The set $\\{y_i\\}$ can then be seen as a transformed coordinate system, shifted by $\bmu$ and rotated by $\U$.[^fn2] Alternatively, we can write this as a vector:
 
 $$
 \begin{equation}\label{2}
@@ -535,13 +519,14 @@ Now, in the univariate case, the second moment is given by $\E[x^2]$. In the mul
 
 $$
 \begin{align}
-\E[\x\x\T] &= \frac{1}{(2\pi)^{d/2}\lvert\bSigma\rvert^{1/2}}\int\exp\left( -\frac{1}{2}(\x - \bmu)\T\bSigma\inv (\x-\bmu) \right) \x\x\T d\x \nonumber \\\\[3pt]
+&\E[\x\x\T] \nonumber \\\\
+&= \frac{1}{(2\pi)^{d/2}\lvert\bSigma\rvert^{1/2}}\int\exp\left( -\frac{1}{2}(\x - \bmu)\T\bSigma\inv (\x-\bmu) \right) \x\x\T d\x \nonumber \\\\[3pt]
 &= \frac{1}{(2\pi)^{d/2}\lvert\bSigma\rvert^{1/2}}\int\exp\left( -\frac{1}{2}\z\T\bSigma\inv \z \right) (\z + \bmu)(\z + \bmu)\T d\z \nonumber \\\\[3pt]
-&= \frac{1}{(2\pi)^{d/2}\lvert\bSigma\rvert^{1/2}}\int\exp\left( -\frac{1}{2}\z\T\bSigma\inv \z \right) (\z\z\T + 2\z\T\bmu + \bmu\bmu\T)  d\z. \label{4}
+&= \frac{1}{(2\pi)^{d/2}\lvert\bSigma\rvert^{1/2}}\int\exp\left( -\frac{1}{2}\z\T\bSigma\inv \z \right) (\z\z\T + \z\bmu\T + \bmu\z\T + \bmu\bmu\T)  d\z. \label{4}
 \end{align}
 $$
 
-By the same arguments as before, the term involving $\z\T\bmu$ will vanish due to symmetry, and the term involving $\bmu\bmu\T$ will integrate to $\bmu\bmu\T$ due to normalization. Then, we are left with the term involving $\z\z\T$. Using the eigenvalue decomposition of $\bSigma$, we can write
+By the same arguments as before, the terms involving $\z\bmu\T$ and $\bmu\z\T$ will vanish due to symmetry, and the term involving $\bmu\bmu\T$ will integrate to $\bmu\bmu\T$ due to normalization. Then, we are left with the term involving $\z\z\T$. Using the eigenvalue decomposition of $\bSigma$, we can write
 
 <p align=center>
 $\y = \U\z, \quad$ or $\quad \z = \U\T\y$.
