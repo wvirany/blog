@@ -1238,14 +1238,16 @@ For the discussion on the sum of two Gaussians, the convolution operation, and t
 
 * [LibreTexts](https://math.libretexts.org/Bookshelves/Differential_Equations/Introduction_to_Partial_Differential_Equations_(Herman)/09%3A_Transform_Techniques_in_Physics/9.06%3A_The_Convolution_Operation) --- This gives a great tutorial on the convolution operation and also shows how to compute the convolution of two zero-mean Gaussians.
 * [Kenneth Zeger's notes](https://www.ee.iitb.ac.in/~belur/ee210/current-tutorials-quizzes/Kenneth-Zeger-UCSD-Gaussian-polar-coordinate.pdf) --- this is a nice tutorial on performing the integral necessary to take the Fourier transform of a zero-mean Gaussian.
-* [Ablowitz & Foxas](https://ftfsite.ru/wp-content/files/tfkp_endlish_2.2.pdf) --- This is the main text I used for complex analysis; chapter 4 deals with contour integration as well as the Fourier transform.
+* [Ablowitz & Fokas](https://ftfsite.ru/wp-content/files/tfkp_endlish_2.2.pdf) --- This is the main text I used for complex analysis; chapters 3 & 4 deal with Cauchy's theorem, contour integration, and the Fourier transform.
 
-However, I added some details to the derivation and generalized the results for the Fourier transform of the Gaussian to a general Gaussian with nonzero mean.
+In addition to these resources, I added some details to the derivations and generalized the results for the Fourier transform of the Gaussian to a Gaussian with nonzero mean.
 
-For more intuition behind the Gaussian distribution, I cannot recommend the following videos by 3Blue1Brown highly enough:
+For more intuition behind sums of Gaussian distributions, I cannot recommend the following videos by 3Blue1Brown highly enough:
 
 * [Convolutions | Why X+Y in probability is a beautiful mess](https://youtu.be/IaSGqQa5O-M?si=g2pFPiZIvtl_eWT8)
 * [A pretty reason why Gaussian + Gaussian = Gaussian](https://youtu.be/d_qvLDhkg00?si=nx-3tQK9SMjjouNG)
+
+Thanks for reading!
 
 ## Appendix
 
