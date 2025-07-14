@@ -4,7 +4,7 @@ date: "2025-06-13"
 summary: ""  
 description: ""  
 draft: false
-toc: false  
+toc: true  
 readTime: true  
 autonumber: false  
 math: true  
@@ -74,7 +74,7 @@ Z = \frac{X - \mu}{\sigma}.
 \end{equation*}
 $$
 
-The z-score measures the number of standard deviations $X$ is from the mean. Unlike the z-score, however, the Mahalanobis distance depends on the *dimension*; one unit in Euclidean distance from the mean in one direction may not be the same as one unit distance in another direction, in terms of $\Delta$, since the variance along one dimension of $\x$ may be different than that along another. However, if $\bSigma$ is the identity matrix, then $\Delta$ is in fact equivalent to the Euclidean distance.
+The z-score measures the number of standard deviations $X$ is from the mean. Unlike the z-score, however, the Mahalanobis distance depends on the *dimension*; one unit in Euclidean distance from the mean in one direction may not be the same as one unit distance in another direction in terms of $\Delta$, since the variance along one dimension of $\x$ may be different along that of another. However, if $\bSigma$ is the identity matrix, then $\Delta$ is in fact equivalent to the Euclidean distance.
 
 Since the covariance matrix $\bSigma$ is real and symmetric, we can perform [eigenvalue decomposition](#appendix) to write it in the form
 
@@ -938,7 +938,7 @@ $$
 $$
 
 
-Thus, we have the result:
+This gives the following result:
 
 $$
 p(\y) = \Norm\left( \y \mid \A\bmu + \b, \A\bSigma\A\T \right).
@@ -1240,7 +1240,7 @@ For the discussion on the sum of two Gaussians, the convolution operation, and t
 * [Kenneth Zeger's notes](https://www.ee.iitb.ac.in/~belur/ee210/current-tutorials-quizzes/Kenneth-Zeger-UCSD-Gaussian-polar-coordinate.pdf) --- this is a nice tutorial on performing the integral necessary to take the Fourier transform of a zero-mean Gaussian.
 * [Ablowitz & Fokas](https://ftfsite.ru/wp-content/files/tfkp_endlish_2.2.pdf) --- This is the main text I used for complex analysis; chapters 3 & 4 deal with Cauchy's theorem, contour integration, and the Fourier transform.
 
-In addition to these resources, I added some details to the derivations and generalized the results for the Fourier transform of the Gaussian to a Gaussian with nonzero mean.
+In addition to these resources, I added some details to the derivations and generalized the results for the Fourier transform of the Gaussian to the case where the mean is nonzero.
 
 For more intuition behind sums of Gaussian distributions, I cannot recommend the following videos by 3Blue1Brown highly enough:
 

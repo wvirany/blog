@@ -139,7 +139,7 @@ $$
 
 Once again, since each $A_j^{(l)}$ are i.i.d., then as $n_l \to \infty$, the CLT implies that $Z_j^{(l+1)}$ will take a Normal distribution. Thus, $Z_j^{(l+1)}$ is also a GP, and we have our result.
 
-Specifically, the mean function of the corresponding GP is given by $m(\mathbf(x)) = \mathbb{E} \left[ Z_j^{(l+1)} \right]$, and since the weights and biases have mean zero, then $m(\mathbf{x}) = 0$. Then, we have
+Specifically, the mean function of the corresponding GP is given by $m(\x) = \mathbb{E} \left[ Z_j^{(l+1)} \right]$, and since the weights and biases have mean zero, then $m(\mathbf{x}) = 0$. Then, we have
 
 $$
 Z_j^{(l+1)} \sim \mathcal{GP}(0, k^{(l+1)}),
