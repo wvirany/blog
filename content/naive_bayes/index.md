@@ -1,6 +1,6 @@
 ---
 title: "Naive Bayes"
-draft: true
+draft: false
 math: true
 comments: false
 ---
@@ -9,7 +9,7 @@ First, let's establish the Naive Bayes classification problem.
 
 Supppose we are given a dataset of $n$ iid observations $\cD = \\{\(\x^{(i)}, y_i)\\}_{i=1}^n$, where each $\x^{(i)}$ is some $d$-dimensional input vector and $y_i \in \\{1, 2, \ldots, K\\}$ is the corresponding class label. Given a new input $\x$, the goal of classification is to correctly assign $\x$ to one of $K$ classes.
 
-Let's distringuish between two approaches to classification: *discriminative* vs. *generative* modeling.
+Let's distinguish between two approaches to classification: *discriminative* vs. *generative* modeling.
 
 In the **discriminative modeling** approach, we wish to model the distribution over class labels $p(y \mid \x)$. Thus, given an input $\x$, we should be able to assign probabilities to each of the $K$ classes, and choose the $y$ which maximizes this probabilitiy.
 
@@ -50,18 +50,69 @@ $$
 
 One way to say this is "$x_1, x_2, \ldots, x_d$ are independent, conditioned on $y$." Now, we can model each individual distribution $p(x_i \mid y)$ independently. In the case of binary features, this only requires $d$ parameters for each class instead of $2^d-1$.
 
-As an example, consider three random variables $a, b, c \in \R$.
-
-
 **When does Naive Bayes work?**
 
-From here, it's natural to ask the question "when does Naive Bayes work?" Let's look at some different examples.
+Let's consider two classification problems:
+
+**Example: Spam vs. ham**
 
 
-**Example:** Spam vs. ham
+**Example: Medical diagnosis**
 
+Consider the task of diagnosing heart disease based on the following symptoms:
 
-**Example:** Medical diagnosis
+* $C$ - chest pain
+* $B$ - high blood pressure
+* $S$ - shortness of breath
+
+Furthermore, let $H$ indicate whether or not the patient has heart disease. Given a patient with any combination of these symptoms, we wish to diagnose their condition.
+
+Now, suppose we know
+
+* $P(H) = 0.05$
+* $P(\neg H) = 0.95$
+
+That is, 5% of the population suffers from heart disease. Moreover, suppose we know that for people with heart disease:
+
+* $P(C \mid H) = 0.8$
+* $P(B \mid H) = 0.6$
+* $P(S \mid H) = 0.7$
+
+and that for people without heart disease:
+
+* $P(C \mid \neg H) = 0.05$
+* $P(B \mid \neg H) = 0.2$
+* $P(S \mid \neg H) = 0.1$
+
+If a patient has heart disease, the probability that they suffer from a given symptom is high. On the other hand, the probability that a healthy patient suffers from a given symptom is low.
+
+Now, suppose we have a patient come in who is suffering from all three symptoms. From Bayes' rule, we have
+
+$$
+\begin{align*}
+P(H \mid C, B, S) &\propto P(C, B, S \mid H)P(H) \\\\[6pt]
+\text{ \scriptsize (naive Bayes assumption) } \qquad &= P(C\mid H) \\, P(B\mid H) \\, P(S\mid H) \\, P(H) \\\\[6pt]
+&= (0.8) * (0.6) * (0.7) * (0.05) \\\\[6pt]
+&= 0.0168.
+\end{align*}
+$$
+
+Similarly, 
+
+$$
+\begin{align*}
+P(\neg H \mid C, B, S) &\propto P(C \mid \neg H) \\, P(B \mid \neg H) \\, P(S \mid \neg H) \\, P(\neg H) \\\\[6pt]
+&= (0.05) * (0.2) * (0.1) * (0.95) \\\\
+&= 0.00095.
+\end{align*}
+$$
+
+The result:
+
+$$
+P(H \mid C, B, S) = \frac{P(C, B, S \mid H)P(H)}{P(H)}
+$$
+
 
 
 
