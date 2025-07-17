@@ -54,7 +54,7 @@ One way to say this is "$x_1, x_2, \ldots, x_d$ are independent, conditioned on 
 
 Let's consider two classification problems:
 
-**Example: Spam vs. ham**
+**Example: Document classification**
 
 
 **Example: Medical diagnosis**
@@ -62,7 +62,7 @@ Let's consider two classification problems:
 Consider the task of diagnosing heart disease based on the following symptoms:
 
 * $C$ - chest pain
-* $B$ - high blood pressure
+* $F$ - fatigue
 * $S$ - shortness of breath
 
 Furthermore, let $H$ indicate whether or not the patient has heart disease. Given a patient with any combination of these symptoms, we wish to diagnose their condition.
@@ -75,13 +75,13 @@ Now, suppose we know
 That is, 5% of the population suffers from heart disease. Moreover, suppose we know that for people with heart disease:
 
 * $P(C \mid H) = 0.8$
-* $P(B \mid H) = 0.6$
+* $P(F \mid H) = 0.6$
 * $P(S \mid H) = 0.7$
 
 and that for people without heart disease:
 
 * $P(C \mid \neg H) = 0.05$
-* $P(B \mid \neg H) = 0.2$
+* $P(F \mid \neg H) = 0.2$
 * $P(S \mid \neg H) = 0.1$
 
 If a patient has heart disease, the probability that they suffer from a given symptom is high. On the other hand, the probability that a healthy patient suffers from a given symptom is low.
@@ -90,8 +90,8 @@ Now, suppose we have a patient come in who is suffering from all three symptoms.
 
 $$
 \begin{align*}
-P(H \mid C, B, S) &\propto P(C, B, S \mid H)P(H) \\\\[6pt]
-\text{ \scriptsize (naive Bayes assumption) } \qquad &= P(C\mid H) \\, P(B\mid H) \\, P(S\mid H) \\, P(H) \\\\[6pt]
+P(H \mid C, F, S) &\propto P(C, F, S \mid H)P(H) \\\\[6pt]
+\text{ \scriptsize (naive Bayes assumption) } \qquad &= P(C\mid H) \\, P(F\mid H) \\, P(S\mid H) \\, P(H) \\\\[6pt]
 &= (0.8) * (0.6) * (0.7) * (0.05) \\\\[6pt]
 &= 0.0168.
 \end{align*}
@@ -101,17 +101,28 @@ Similarly,
 
 $$
 \begin{align*}
-P(\neg H \mid C, B, S) &\propto P(C \mid \neg H) \\, P(B \mid \neg H) \\, P(S \mid \neg H) \\, P(\neg H) \\\\[6pt]
+P(\neg H \mid C, F, S) &\propto P(C \mid \neg H) \\, P(F \mid \neg H) \\, P(S \mid \neg H) \\, P(\neg H) \\\\[6pt]
 &= (0.05) * (0.2) * (0.1) * (0.95) \\\\
 &= 0.00095.
 \end{align*}
 $$
 
-The result:
+Naive Bayes then predicts
 
 $$
-P(H \mid C, B, S) = \frac{P(C, B, S \mid H)P(H)}{P(H)}
+\begin{align*}
+P(H \mid C, F, S) &= \frac{P(C, F, S) \\, P(H)}{P(C, F, S)} \\\\[10pt]
+\text{\scriptsize (law of total probability)} \qquad &= \frac{P(C, F, S) \\, P(H)}{P(C, F, S \mid H) \\, P(H) + P(C, F, S \mid \neg H) \\, P(\neg H)} \\\\[10pt]
+&= \frac{0.0168}{0.0168 + 0.00095} \\\\[10pt]
+&\approx 0.95.
+\end{align*}
 $$
+
+This gives approximately a 95% chance that the patient has heart disease!
+
+However, there is a problem with this model. In reality, if a patient is suffering from any one of the symptoms, they are probably also suffering from the others. This shows an example of where the Naive Bayes assumption breaks down due to **highly correlated features**. The model essentially "double counts" features and overestimates the probability that the patient has heart disease.
+
+For example, if a patient suffers from chest pain, they will also likely suffer from the other symptoms. However, this could be due to any number of health problems, and doesn't necessarily indicate heart disease.
 
 
 
