@@ -11,7 +11,7 @@ Supppose we are given a dataset of $n$ iid observations $\cD = \\{\(\x^{(i)}, y_
 
 Let's distinguish between two approaches to classification: *discriminative* vs. *generative* modeling.
 
-In the **discriminative modeling** approach, we wish to model the distribution over class labels $p(y \mid \x)$. Thus, given an input $\x$, we should be able to assign probabilities to each of the $K$ classes, and choose the $y$ which maximizes this probabilitiy.
+In the **discriminative modeling** approach, we wish to model the distribution over class labels $p(y \mid \x)$. An example of this would be using a generalized linear model (such as logistic regression) to predict class labels given the features. Thus, given an input $\x$, we should be able to assign probabilities to each of the $K$ classes, and choose the $y$ which maximizes this probabilitiy.
 
 In the **generative modeling** approach, we wish to model the sample generating process by estimating each class-conditional probability density. That is, using Bayes' rule, we can write
 
@@ -27,7 +27,9 @@ Naive Bayes takes a generative modeling approach to classification.
 
 There are many ways to estimate the densities $p(\x \mid y)$ and $p(y)$. One such method is maximum likelihood estimation (MLE), where we assume a particular parametric form of each distribution---for example, $\x$ might be drawn from a Gaussian distribution, with parameters $\bmu_k$ and $\bSigma_k$, and $y$ might be drawn from a multinomial distribution with $K$ classes, with probabilities $p(y = k) = \pi_k$. Then, we could find the parameters which maximize the likelihood of the observed dataset and use these to estimate the probability densities. However, for the sake of understanding Naive Bayes, I won't focus on density-estimation techniques here.
 
-Now, let's assume that the features of $\x$ are binary. Then, we can write the joint distribution over the features of $\x$, conditioned on $y$ as
+**Why Naive Bayes?**
+
+Let's assume that the features of $\x$ are binary. Then, we can write the joint distribution over the features of $\x$, conditioned on $y$ as
 
 $$
 \begin{equation}\label{2}
@@ -35,9 +37,9 @@ p(\x \mid y) = p(x_1, x_2, \ldots, x_d \mid y),
 \end{equation}
 $$
 
-where each $x_i \in \\{0, 1\\}$. Then, if we want to estimate the probability density of $\x$ being in a particular class $y$, we would need to assign a probability to each possible configuration of $\x$ --- there are $2^d$ possible such configurations! This requires estimating $2^d - 1$ parameters. [^fn1]  In order to gain an accurate estimation for such a distribution, we would need **a lot of data** ---  this is an example of the *curse of dimensionality*. Moreover, this is just for a single class $y$.
+where each $x_i \in \\{0, 1\\}$. Then, if we want to estimate the probability of $\x$ being in a particular class $y$, we would need to assign a probability to each possible configuration of $\x$ --- there are $2^d$ possible such configurations! This requires estimating $2^d - 1$ parameters for each class.[^fn1]  In order to gain an accurate estimation for such a distribution, we would need a lot of data ---  this is an example of the **curse of dimensionality**.
 
-This calls for a need to reduce the dimensionality of our parameter space.
+This calls for a need to reduce the dimensionality of our feature space.
 
 
 **What is conditional independence?**
@@ -54,7 +56,62 @@ One way to say this is "$x_1, x_2, \ldots, x_d$ are independent, conditioned on 
 
 Let's consider two classification problems:
 
-**Example: Document classification**
+**Example: Sentiment analysis**
+
+Suppose we are classifying restaurant reviews as either positive $P$ or negative $N$. To do so, we'll use the following words as features:
+
+* $D$ - "delicious"
+* $T$ - "terrible"
+* $F$ - "fast"
+* $S$ - "slow"
+
+Suppose we have a training dataset containing 10 positive and 10 negative reviews, i.e., $P(P) = P(N) = 0.5$. Moreover, suppose we observe the above features with the following probabilities:
+
+$$
+\begin{align*}
+&P(D \mid P) = 0.6, \quad P(D \mid N) = 0 \\\\
+&P(T \mid P) = 0, \quad \\; \\;\\; P(T \mid N) = 0.5 \\\\
+&P(F \mid P) = 0.5, \quad P(F \mid N) = 0.2 \\\\
+&P(S \mid P) = 0.1, \quad P(S \mid N) = 0.6
+\end{align*}
+$$
+
+For example, we might have observed "delicious" in 6/10 of the positive reviews, and none of the negative reviews.
+
+Then, suppose we are given a new review: "delicious food and fast service". From Bayes' rule, we have
+
+$$
+\begin{align*}
+P(P \mid D, S) &= \frac{P(D, S \mid P) \\, P(P)}{P(D, S)} \qquad\qquad\qquad\qquad \\\\[10pt]
+\text{\scriptsize (naive Bayes assumption)} \qquad\qquad\qquad &= \frac{P(D \mid P) \\, P(S \mid P) \\, P(P)}{P(D, S)}
+\end{align*}
+$$
+
+We can evaluate the denominator using the law of total probability:
+
+$$
+\begin{align*}
+P(D, S) &= P(D, S \mid P) \\, P(P) + P(D, S \mid N) \\, P(N) \\\\[6pt]
+&= P(D \mid P) \\, P(S \mid P) \\, P(P) + P(D \mid N) \\, P(S \mid N) \\, P(N) \\\\[6pt]
+&= 0.6 * 0.1 * 0.5 = 0.03
+\end{align*}
+$$
+
+
+
+Then, the Naive Bayes model predicts the probability of the review being positive as
+
+$$
+P(P \mid D, S) = \frac{0.6 * 0.1 * 0.5}{0.3} = 1.
+$$
+
+This seems reasonable! Although, I will point out a caveat: since we never saw a negative review with the word "delicious", then we will always predict a review with this word as positive, noting that
+
+$$
+P(N \mid D) \propto P(D \mid N) \\, P(N),
+$$
+
+and $P(D \mid N) = 0$. To overcome this, a common strategy is to add a small value to all of the probabilities --- this ensures that no probabilities are exactly 0.
 
 
 **Example: Medical diagnosis**
@@ -67,26 +124,29 @@ Consider the task of diagnosing heart disease based on the following symptoms:
 
 Furthermore, let $H$ indicate whether or not the patient has heart disease. Given a patient with any combination of these symptoms, we wish to diagnose their condition.
 
-Now, suppose we know
+Now, suppose we know $P(H) = 0.05$ and $P(\neg H) = 0.95$. That is, 5% of the population suffers from heart disease. Moreover, suppose we know that for people with heart disease:
 
-* $P(H) = 0.05$
-* $P(\neg H) = 0.95$
-
-That is, 5% of the population suffers from heart disease. Moreover, suppose we know that for people with heart disease:
-
-* $P(C \mid H) = 0.8$
-* $P(F \mid H) = 0.6$
-* $P(S \mid H) = 0.7$
+$$
+\begin{gather*}
+&P(C \mid H) = 0.8 \\\\
+&P(F \mid H) = 0.6 \\\\
+&P(S \mid H) = 0.7
+\end{gather*}
+$$
 
 and that for people without heart disease:
 
-* $P(C \mid \neg H) = 0.05$
-* $P(F \mid \neg H) = 0.2$
-* $P(S \mid \neg H) = 0.1$
+$$
+\begin{gather*}
+&P(C \mid \neg H) = 0.05 \\\\
+&P(F \mid \neg H) = 0.2 \\\\
+&P(S \mid \neg H) = 0.1
+\end{gather*}
+$$
 
 If a patient has heart disease, the probability that they suffer from a given symptom is high. On the other hand, the probability that a healthy patient suffers from a given symptom is low.
 
-Now, suppose we have a patient come in who is suffering from all three symptoms. From Bayes' rule, we have
+Now, suppose we have a patient who is suffering from all three symptoms. From Bayes' rule, we have
 
 $$
 \begin{align*}
