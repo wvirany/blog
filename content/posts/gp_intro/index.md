@@ -22,7 +22,8 @@ hideBackToTop: false
 * consistent format for references (e.g., Bishop, 2006, Bishop (2006), or [Bishop 2006])
 * at the end, discuss varying hyperparameters and how to make optimizations with Cholesky factorization
 * type hinting for `kernel`; e.g., from typing import Callable?
-* Varying the hyperparameters / marginal log likelihood?
+* double check formulas in `ZeroMeanGP` class -> when to use K vs. K + sigma^2I
+* when to use \btheta vs. \theta
 -->
 
 Gaussian processes (GPs) have always been a particularly confounding topic for me in machine learning (ML). Many introductions talk about the beauty of implicitly defining infinite-dimensional features in function space, or performing Bayesian inference directly in the space of functions. These explanations can seem daunting at first, but in this blog I aim to clarify things and build up to GPs from a basic linear model.
@@ -419,7 +420,7 @@ $$
 where $\psi(\x) = \Sigma^{1/2}\phi(\x)$. We can then redefine the Gram matrices in terms of the kernel function:
 
 $$
-\begin{equation}label{2}
+\begin{equation}\label{2}
 \K = k(\X, \X), \quad \K_\ast = k(\X, \X_\ast), \quad \K_{\ast\ast} = k(\X_\ast, \X_\ast).
 \end{equation}
 $$
@@ -594,7 +595,7 @@ Using the same conditioning rules as before, the parameters of our predictive di
 
 $$
 \begin{align*}
-\bmu_{f\mid\cD} &= \K_\ast\T \left( \K + \sigma^2\I \right)\inv\f \\\\
+\bmu_{f\mid\cD} &= \K_\ast\T \left( \K + \sigma^2\I \right)\inv\y \\\\
 \K_{f\mid\cD} &= \K_{\ast\ast} - \K_\ast\T \left( \K + \sigma^2\I \right)\inv \K_\ast.
 \end{align*}
 $$
@@ -669,7 +670,7 @@ class ZeroMeanGP:
         K_train_test = self.make_covar(self._X_train, X_test)
         K_test_test = self.make_covar(X_test, X_test)
 
-        # Pre-compute inverse of covariance
+        # Pre-compute inverse of covariance for repeated use
         K_inv = np.linalg.inv(self._K_train_train)
 
         # Posterior mean
@@ -704,9 +705,54 @@ plot_predictions(mean, std)
 </div>
 
 
-<!-- ### Varying the hyperparameters
+### Varying the hyperparameters
 
-The performance of the GP can depend drastically on the setting of the hyperparameters. In this case, our hyperparameters are the amplitude and noise of the squared exponential function. Since we are passing a generic function to the GP model, we can change the parameters of the kernel function by using the `partial` method:
+The performance of the GP can depend drastically on the setting of the hyperparameters. In this case, our hyperparameters are the amplitude and noise of the squared exponential function.
+
+For simple problems like ours, we can often choose appropriate hyperparameter settings by inspecting a few reasonable options. There are also common methods for choosing reasonable values.[^fn10] However, for more sophisticated problems, particularly those in high-dimensional spaces, we might like to employ more robust methods for finding reasonable values for the hyperparameters.
+
+We can assess how well the model fits the training data by computing the marginal likelihood, defined as
+
+$$
+p(\y \mid \X, \theta) = \Norm \big( \y \mid \bmu(\X; \theta), \K(\X, \X; \btheta) \big),
+$$
+
+where $\theta$ is some vector containing the hyperparameters. This measures the likelihood of drawing samples from our modeled distribution Thus, choosing some hyperparameters for which the MLL is high corresponds to choosing a model which closely approximates the true distribution of the data.
+
+In practice, we usually compute the marginal log-likelihood (MLL). This takes the form:
+
+$$
+\begin{align*}
+\log p(\y \mid \X, \btheta) &= - \frac{n}{2} \log 2\pi - \frac{1}{2} \log \Big| \K + \sigma^2\I \Big| \\\\[4pt]
+&- \frac{1}{2} \Big( \y - \bmu \Big)\T \Big( \K + \sigma^2\I \Big) \inv \Big( \y - \bmu \Big).
+\end{align*}
+$$
+
+Note that the first term is constant with respect to the hyperparameters, so we can ignore this when maximizing the MLL. Moreover, we are assuming that the mean function is zero. Thus, we have the following simplified expression for the MLL:
+
+$$
+\log p(\y \mid \X, \btheta) \propto - \log \Big| \K + \sigma^2\I \Big| - \y\T \Big( \K + \sigma^2\I \Big) \inv \y.
+$$
+
+We can now implement a function to in the `ZeroMeanGP` class to compute the MLL:
+
+```py
+def compute_mll(self):
+        """Compute the MLL of training data."""
+        n = len(self._X_train)
+        K = self._K_train_train
+        K_inv = np.linalg.inv(K)
+        mll = - np.log(np.linalg.det(K)) - self._y_train.T @ K_inv @ self._y_train
+        return mll
+```
+
+
+
+
+
+
+
+Since we are passing a generic function to the GP model, we can change the parameters of the kernel function by using the `partial` method:
 
 ```py
 from functools import partial
@@ -717,7 +763,7 @@ gp = ZeroMeanGP(X_data, y_data, kernel, sigma=0.1)
 mean, cov = gp.predict(X_star)
 ```
 
-The following shows the GP fit under three different settings of these hyperparameters:
+The following shows the GP fit under three different settings of these hyperparameters, as well as the corresponding MLL values:
 
 
 
@@ -725,10 +771,6 @@ The following shows the GP fit under three different settings of these hyperpara
 
 
 
-For simple problems like ours, we can often choose appropriate hyperparameter settings by inspection. However, for more sophisticated problems, we might like to employ a more robust method for finding reasonable values for the hyperparameters.
-
-
- -->
 
 ## References
 
@@ -760,3 +802,5 @@ $$
 [^fn8]: Some (justifiably) prefer the name "exponentiated quadratic".
 
 [^fn9]: Note that, in the case where a GP is defined over finitely many variables, this just reduces to the familiar multivariate Gaussian distribution.
+
+[^fn10]: For example when using the squared exponentional covariance function, it is commong to set the amplitude equal to the variance of the training set and the lengthscale equal to $.01$ times the amplitude. Similarly, it is common to use a constant mean function equal to the average of the training set. Moreover, one might initialize the hyperparameters to these settings, then maximize the MLL with respect to the hyperparameters under gradient descent.

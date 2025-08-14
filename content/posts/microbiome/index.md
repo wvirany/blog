@@ -781,7 +781,7 @@ Finally, I summarize the results for each of the models, assessing various class
 
 Even when using just 20 features (about 3.5% of the original feature set), the voting classifier maintains strong performance with an ROC AUC score of 0.945 and F1 score of 0.949. This suggests that a very small subset of bacterial species may be sufficient for accurate IBD diagnosis.
 
-It is important to note here that the original study had a slightly different experimental setup. These results which they report were from cross-validated test scores evaluated on data taken in different studies. This is slightly different to my experimental setup, where I took several datasets from different studies and shuffled them together, training and testing on samples across datasets.a
+It is important to note here that the original study had a slightly different experimental setup. These results which they report were from cross-validated test scores evaluated on data taken in different studies. This is slightly different to my experimental setup, where I took several datasets from different studies and shuffled them together, training and testing on samples across datasets.
 
 ## Discussion
 
