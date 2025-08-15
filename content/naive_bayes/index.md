@@ -165,9 +165,9 @@ We saw that Naive Bayes makes a strong simplifying assumption --- conditional in
 
 In the sentiment analysis problem, words like "delicious" and "fast" describe different aspects of the quality of the restaurant --- it's reasonable to assume these are independent. On the other hand, in the medical diagnosis problem, different symptoms were strongly correlated, so the independence assumption was invalid.
 
-Another way to think about this is in terms of **information gain** --- how much new evidence each feature provides. In sentiment analysis, learning that a review contains 'fast' gives you roughly the same amount of information about positivity regardless of whether you already know it contains 'delicious'. Each word contributes independent evidence.
+Another way to think about this is in terms of **information gain** --- how much new evidence each feature provides. In sentiment analysis, learning that a review contains "fast" gives you roughly the same amount of information about positivity regardless of whether you already know it contains "delicious". Each word contributes independent evidence.
 
-However, in the medical diagnosis problem, the information gain from each symptom depends heavily on what you already know. If you observe chest pain first, then learning about shortness of breath adds relatively little new information. But if shortness of breath were your first observation, it would provide substantial evidence. The problem is that Naive Bayes treats both scenarios identically, always giving shortness of breath the same 'weight' regardless of context.
+However, in the medical diagnosis problem, the information gain from each symptom depends heavily on what you already know. If you observe chest pain first, then learning about shortness of breath adds relatively little new information. But if shortness of breath were your first observation, it would provide substantial evidence. The problem is that Naive Bayes treats both scenarios identically, always giving shortness of breath the same "weight" regardless of context.
 
 **Key takeaway:** Naive Bayes works well when the features provide roughly the same amount of information regardless of what features you've already observed. This is the conditional independence assumption.
 
