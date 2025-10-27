@@ -686,14 +686,14 @@ Our GP class takes training data and a kernel function as input, and computes $\
 We can now make predictions with our model and visualize the results as follows:
 
 ```py
-def squared_exponential(x, x_prime, amp=2.0, length=1.0):
+def squared_exponential(x, x_prime, amp=1, length=.5):
     return amp**2 * np.exp(- (x - x_prime)**2 / (2 * length**2))
 
 gp = ZeroMeanGP(X_data, y_data, squared_exponential)
 mean, cov = gp.predict(X_star)
 std = np.sqrt(cov)
 
-plot_predictions(mean, std)
+plot_predictions(mean, std, save=True)
 ```
 
 <div id="fig3" class="figure">
@@ -762,8 +762,14 @@ Finally, let's find the optimal hyperparameters and once more make predictions:
 
 ```py
 init_params = (2.0, 1.0, 0.1)
-amp, length, sigma = optimize_hyperparams(X_data, y_data, init_params)
+optimized_params = optimize_hyperparams(X_data, y_data, init_params)
+print(optimized_params.round(3))
 
+[2.308 1.331 0.111]
+```
+
+```py
+amp, length, sigma = optimized_params
 kernel = partial(squared_exponential, amp=amp, length=length)
 gp = ZeroMeanGP(X_data, y_data, kernel, sigma=sigma)
 
