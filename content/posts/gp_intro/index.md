@@ -1,9 +1,9 @@
 ---
 title: "A spelled-out introduction to Gaussian processes"  
-date: "2025-08-18"  
+date: "2025-09-01"  
 summary: ""  
 description: ""  
-draft: true
+draft: false
 toc: false  
 readTime: true  
 autonumber: false  
@@ -431,7 +431,9 @@ $$
 Thus, we've shown that for *any* choice of prior covariance $\bSigma$ and feature map $\phi$, we can express our result in terms of a function $k$ which corresponds to some inner product. If we treat this function as a "black box", we could skip the step of explicitly defining these quantities, and simply specify a kernel function to build our Gram matrices. So long as the kernel function we choose can be expressed in terms of a valid inner product, this corresponds to some feature map of the input vectors. I'll shortly discuss how to choose valid kernel functions.
 
 
-The advantage of this approach is that the feature vectors we'd like to work with might be very high dimensional, and it might be cheaper to work in terms of the kernel function. As a concrete example,[^fn7] consider some vector $\x = (x_1, x_2, \dots, x_d) \in R^d$, and suppose we wish to express all the monomials up to degree $2$ in terms of the features of $\x$:
+The advantage of this approach is that the feature vectors we'd like to work with might be very high dimensional, and it might be cheaper to work in terms of the kernel function.
+
+As a concrete example,[^fn7] consider some vector $\x = (x_1, x_2, \dots, x_d) \in R^d$, and suppose we wish to express all the monomials up to degree $2$ in terms of the features of $\x$:
 
 $$
 \phi(\x) = \begin{bmatrix}
@@ -446,23 +448,23 @@ x_d^2
 \end{bmatrix}.
 $$
 
-Noting that there is one constant term, $d$ linear terms, and $d^2$ quadratic terms, computing this requires $\mathcal{O}(d^2)$ operations:
+Noting that there is one constant term, $d$ linear terms, and $d\choose{2}$ quadratic terms, computing this requires $\mathcal{O}(d^2)$ operations:
 
 $$
-1 + d + d^2 \sim \mathcal{O}(d^2).
+1 + d + {d\choose{2}} \sim \mathcal{O}(d^2).
 $$
 
 For large $d$, this could become prohibitive to compute. Alternatively, we can write the inner product as
 
 $$
 \begin{align*}
-\phi(\x)\T\phi(\x\p) &= \sum_{i=1}^dx_ix_i\p + \sum_{i=1}^dx_i^2x_i^{\prime\\,2} + 2 \sum_{i=1}^d \sum_{j \neq i}^d x_ix_i\p x_jx_j\p \\\\
-&= \sum_{i=1}^d x_ix_i\p + \left( \sum_{i=1}^d x_ix_i\p \right)^2 \\\\
-&= \x\T\x\p + (\x\T\x\p)^2.
+\phi(\x)\T\phi(\x\p) &= 1 + \sum_{i=1}^dx_ix_i\p + \sum_{i=1}^dx_i^2x_i^{\prime\\,2} + 2 \sum_{i=1}^d \sum_{i < j} x_ix_j x_i\p x_j\p \\\\
+&= 1 + \sum_{i=1}^d x_ix_i\p + \left( \sum_{i=1}^d x_ix_i\p \right)^2 \\\\
+&= 1 + \x\T\x\p + (\x\T\x\p)^2.
 \end{align*}
 $$
 
-Thus, we can define the kernel function $k(\x, \x\p) = \x\T\x\p + (\x\T\x\p)^2$. In doing so, we can just plug $\x$ into the kernel function and make our predictions based on these values using the expressions for the parameters defined by $\eqref{4}$ and $\eqref{5}$. We never have to compute the explicit feature map $\phi(\x)$, nor the parameters $\w$.
+Thus, we can define the kernel function $k(\x, \x\p) = 1 + \x\T\x\p + (\x\T\x\p)^2$. In doing so, we can just plug $\x$ into the kernel function and make our predictions based on these values using the expressions for the parameters defined by $\eqref{4}$ and $\eqref{5}$. We never have to compute the explicit feature map $\phi(\x)$, nor the parameters $\w$.
 
 
 
@@ -728,7 +730,7 @@ $$
 \log p(\y \mid \X, \btheta) \propto - \log \Big| \K + \sigma^2\I \Big| - \y\T \Big( \K + \sigma^2\I \Big) \inv \y.
 $$
 
-We can now implement a function to in the `ZeroMeanGP` class to compute the MLL:
+We can now implement a function in the `ZeroMeanGP` class to compute the MLL:
 
 ```py
 def compute_mll(self):
