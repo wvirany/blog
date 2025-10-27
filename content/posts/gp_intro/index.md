@@ -530,7 +530,7 @@ Analagously to Bayesian linear regression, we start with a *prior process* over 
 
 First, suppose we can observe the functional outputs directly, i.e., with no noise, so that our dataset is $\cD = (\X, \f)$, where $\f = (f(\x_1), \ldots, f(\x_n))\T$. Note that $f$ denotes the actual function we aim to model, and $\f$ denotes the vector of observations of the function.
 
-As before, we'd like to predict the functional values $\f_\ast$ at new points $\X_\ast \in \R^{d\times n_\ast}$. Note that $\f$ and $\f_\ast$ are finite subsets of the function $f$ over the domain of interest. Thus, from our definition of a GP, the joint distribution $p(\f, \f_\ast)$ will be multivariate Gaussian with mean and covariance defined by the corresponding functions. Letting $m(\x) = 0$, we can model the joint distribution as
+As before, we'd like to predict the functional values $\f_\ast$ at new points $\X_\ast \in \R^{d\times n_\ast}$. Note that $\f$ and $\f_\ast$ are finite subsets of the function $f$ over the domain of interest. Thus, from our definition of a GP, the joint distribution $p(\f, \f_\ast)$ will be multivariate Gaussian with mean and covariance defined by the corresponding functions. Letting the prior mean $m(\x) = 0$, we can model the joint distribution as
 
 $$
 \begin{bmatrix}
@@ -703,7 +703,7 @@ plot_predictions(mean, std)
 
 ### Varying the hyperparameters
 
-The performance of the GP can depend drastically on the setting of the hyperparameters. In this case, our hyperparameters are the amplitude and noise of the squared exponential function.
+The performance of the GP can depend drastically on the setting of the hyperparameters. In this case, our hyperparameters are the amplitude and noise of the squared exponential function, as well as the noise variance $\sigma^2$.
 
 For simple problems like ours, we can often choose appropriate hyperparameter settings by inspecting a few reasonable options. There are also common methods for choosing reasonable values.[^fn10] However, for more sophisticated problems, particularly those in high-dimensional spaces, we might like to employ more robust methods for finding reasonable values for the hyperparameters.
 
@@ -713,9 +713,9 @@ $$
 p(\y \mid \X, \theta) = \Norm \big( \y \mid \bmu(\X; \theta), \K(\X, \X; \btheta) \big),
 $$
 
-where $\theta$ is some vector containing the hyperparameters. This measures the likelihood of drawing samples from our modeled distribution Thus, choosing some hyperparameters for which the MLL is high corresponds to choosing a model which closely approximates the true distribution of the data.
+where $\theta$ is some vector containing the hyperparameters. This measures the likelihood of drawing samples from our modeled distribution Thus, choosing some hyperparameters for which the likelihood is high corresponds to choosing a model which closely approximates the true distribution of the data.
 
-In practice, we usually compute the marginal log-likelihood (MLL). This takes the form:
+In practice, we usually compute the marginal *log*-likelihood (MLL). This takes the form:
 
 $$
 \begin{align*}
@@ -777,6 +777,7 @@ plot_predictions(mean, std)
 </div>
 
 
+Thanks for reading!
 
 
 ## References
