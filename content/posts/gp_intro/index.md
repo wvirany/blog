@@ -26,7 +26,7 @@ hideBackToTop: false
 * when to use \btheta vs. \theta
 -->
 
-Gaussian processes (GPs) have always been a particularly confounding topic for me in machine learning. In this blog, I attempt to present a spelled-out introduction to GPs, building up from a simple linear model. I provide both the underlying mathematics as well as a Python implementation. For the sake of clarity, I omit certain practical considerations regarding numerical stability, computational complexity, etc., which can all be found in standard treatments of GPs.
+Gaussian processes (GPs) have always been a particularly unintuitive topic for me in machine learning. In this blog, I attempt to present a spelled-out introduction to GPs, building up from a simple linear model. I provide both the underlying mathematics as well as a Python implementation. For the sake of clarity, I omit certain practical considerations regarding numerical stability, computational complexity, etc., which can all be found in standard treatments of GPs.
 
 
 ## Bayesian linear regression
@@ -701,7 +701,7 @@ plot_predictions(mean, std, save=True)
 </div>
 
 
-### Varying the hyperparameters
+### Fitting the hyperparameters
 
 The performance of the GP can depend drastically on the setting of the hyperparameters. In this case, our hyperparameters are the amplitude and noise of the squared exponential function, as well as the noise variance $\sigma^2$.
 
