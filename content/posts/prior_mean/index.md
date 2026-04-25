@@ -240,7 +240,7 @@ Interestingly, these same trends don't appear to translate consistently to the r
 
 ## What about other prior means?
 
-So far I have focused on *constant* prior means, and different ways of computing the constant parameter $c$. Of course, we are not restricted to modeling with constant means. Indeed, the authors of the original study test several other forms of the mean function, including linear and quadratic functions, as well as random forests and RBF networks. However, these methods did not seem to provide clear advantages in the original study.
+So far I have focused on *constant* prior means, and different ways of computing the constant parameter $c$. Of course, we are not restricted to modeling with constant means. Indeed, the authors of the original study test several other forms of the mean function, including linear and quadratic functions, as well as random forests and RBF networks. However, these methods did not seem to provide clear advantages across tasks.
 
 I am typically skeptical of the ability of ML-based methods to accurately generalize to regions in the domain with little data, which is exactly the role of the prior mean. As Garnett says, "extrapolation without strong prior knowledge can be a dangerous business" [3]. However, it may be possible to incorporate such domain knowledge to improve OOD generalization. For example, in optimizing a physics-based objective, perhaps we can use a first-order approximation as the prior mean.
 
