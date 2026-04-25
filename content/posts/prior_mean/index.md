@@ -223,7 +223,7 @@ Interestingly, the MLE solution does not appear to suffer from this problem, con
 
 ### Molecular optimization
 
-In this section, I compare the four choices of prior mean on three molecular optimization objectives: QED, AutoDock Vina docking scores, and MM/GBSA-based binding affinity predictions. I am using a dataset from Andersen et al. (2025) which contains roughly 60,000 analogs of experimentally validated Mcl-1 inhibitors. I record the simple regret and retrieval rate---the proportion of the top-1% of the dataset discovered---over 500 iterations, averaged across 5 random seeds.
+In this section, I compare the four choices of prior mean on three molecular optimization objectives: QED, AutoDock Vina docking scores, and MM/GBSA-based binding affinity predictions. I am using a dataset from Andersen et al. (2025) which contains roughly 60,000 analogs of experimentally validated Mcl-1 inhibitors [2]. I record the simple regret and retrieval rate---the proportion of the top-1% of the dataset discovered---over 500 iterations, averaged across 5 random seeds.
 
 <div id="fig5" class="figure">
    <img src="figures/qed.png" alt="Figure 5a" style="width:100%; margin-left:auto; margin-right:auto">
@@ -242,7 +242,7 @@ Interestingly, these same trends don't appear to translate consistently to the r
 
 So far I have focused on *constant* prior means, and different ways of computing the constant parameter $c$. Of course, we are not restricted to modeling with constant means. Indeed, the authors of the original study test several other forms of the mean function, including linear and quadratic functions, as well as random forests and RBF networks. However, these methods did not seem to provide clear advantages in the original study.
 
-I am typically skeptical of the ability of ML-based methods to accurately generalize to regions in the domain with little data, which is exactly the role of the prior mean. As Garnett says, "extrapolation without strong prior knowledge can be a dangerous business" [2]. However, it may be possible to incorporate such domain knowledge to improve OOD generalization. For example, in optimizing a physics-based objective, perhaps we can use a first-order approximation as the prior mean.
+I am typically skeptical of the ability of ML-based methods to accurately generalize to regions in the domain with little data, which is exactly the role of the prior mean. As Garnett says, "extrapolation without strong prior knowledge can be a dangerous business" [3]. However, it may be possible to incorporate such domain knowledge to improve OOD generalization. For example, in optimizing a physics-based objective, perhaps we can use a first-order approximation as the prior mean.
 
 To this end, I attempt to improve the performance of optimizing binding affinity when using a low-fidelity approximation as the prior mean. Molecular dynamics-based methods provide a high-fidelity proxy for binding affinity compared to docking-based methods. Thus, perhaps we can use AutoDock Vina scores as the prior mean when optimizing MM/GBSA.  Ideally, this should speed up the discovery of high-scoring candidates according to MM/GBSA. I test this choice of prior mean against a constant prior mean given by the MLE. The results are shown below:
 
@@ -279,7 +279,9 @@ Thanks for reading!
 
 1. George De Ath, Jonathan E. Fieldsend, and Richard M. Everson. “What do you Mean? The Role of the Mean Function in Bayesian Optimisation”. Proceedings of the 2020 Genetic and Evolutionary Computation Conference Companion. 2020
 
-2. Roman Garnett. Bayesian Optimization. Cambridge University Press, 2023.
+2. Lucas Andersen et al. “Accelerating ligand discovery by combining Bayesian optimization with MMGBSA-based binding affinity calculations” (2025).
+
+3. Roman Garnett. Bayesian Optimization. Cambridge University Press, 2023.
 
 ## Additional results
 
