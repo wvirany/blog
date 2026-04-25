@@ -223,7 +223,7 @@ Interestingly, the MLE solution does not appear to suffer from this problem, con
 
 ### Molecular optimization
 
-In this section, I compare the four choices of prior mean on three molecular optimization objectives: QED, AutoDock Vina docking scores, and MM/GBSA-based binding affinity predictions. I am using a dataset from Andersen et al. (2025) which contains roughly 60,000 analogs of experimentally validated Mcl-1 inhibitors. I record the simple regret and retrieval rate---the proporiton of the top-1% of the dataset discovered---over 500 iterations, averaged across 5 random seeds.
+In this section, I compare the four choices of prior mean on three molecular optimization objectives: QED, AutoDock Vina docking scores, and MM/GBSA-based binding affinity predictions. I am using a dataset from Andersen et al. (2025) which contains roughly 60,000 analogs of experimentally validated Mcl-1 inhibitors. I record the simple regret and retrieval rate---the proportion of the top-1% of the dataset discovered---over 500 iterations, averaged across 5 random seeds.
 
 <div id="fig5" class="figure">
    <img src="figures/qed.png" alt="Figure 5a" style="width:100%; margin-left:auto; margin-right:auto">
@@ -233,7 +233,7 @@ In this section, I compare the four choices of prior mean on three molecular opt
    <img src="figures/mmgbsa.png" alt="Figure 5c" style="width:100%; margin-left:auto; margin-right:auto">
 </div>
 
-Similar to the experiments on synthetic test functions, it appears that there is little difference between the observation min and MLE in terms of simple regret, with the observation mean and max tending to perform slightly worse in earlier stages, yet eventually catching up. However, there don’t appear to be any statistically significant differents between the methods, as all IQRs tend to overlap.
+Similar to the experiments on synthetic test functions, it appears that there is little difference between the observation min and MLE in terms of simple regret, with the observation mean and max tending to perform slightly worse in earlier stages, yet eventually catching up. However, there don’t appear to be any statistically significant differences between the methods, as all IQRs tend to overlap.
 
 Interestingly, these same trends don't appear to translate consistently to the retrieval rate, which is arguably a better-suited metric for molecular discovery. In the case of QED, the observation mean and MLE outperform the alternatives, although this doesn't appear to translate to Vina and MM/GBSA scores, in which there are no clear winners. Overall, the MLE once again tends to perform the best or as well as the best-performing method in each setting, further supporting that this is a good out-of-the-box choice.
 
@@ -268,7 +268,7 @@ Additionally, the figure below shows the candidates selected during BO for a sin
    <img src="figures/bo_obs_tsne.png" alt="Figure 8" style="width:100%; margin-left:auto; margin-right:auto">
 </div>
 
-It's interesting to consider how the docking prior mean model updates its belief upon making new observations. For example, in regions with high Vina scores, yet low MM/GBSA scores, the model makes relatively few observations. Moreover, the model learns to explore regions with low Vina scores, yet high MM/GBSA scores. This is an important capability and addresses a concern in typical filtering-based approaches in drug discovery where we only candidates which appear promising according to low-fidelity oracles. This introduces a "false negatives" problem, in which we skip candidates which in reality show promise according to more accurate experiments.
+It's interesting to consider how the docking prior mean model updates its belief upon making new observations. For example, in regions with high Vina scores, yet low MM/GBSA scores, the model makes relatively few observations. Moreover, the model learns to explore regions with low Vina scores, yet high MM/GBSA scores. This is an important capability and addresses a concern in typical filtering-based approaches in drug discovery where we only proceed with candidates which appear promising according to low-fidelity oracles. This introduces a "false negatives" problem, in which we skip candidates which in reality show promise according to more accurate experiments.
 
 Despite this method being outperformed by the constant prior mean, the success of any method tends to be problem-specific, and there could be certain targets / datasets for which docking scores provide a meaningful prior for higher-fidelity binding affinity approximations. Moreover, this could provide an interesting avenue for multi-fidelity BO, which I plan to further explore in the future.
 
