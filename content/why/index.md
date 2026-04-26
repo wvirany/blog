@@ -6,19 +6,16 @@ comments: false
 
 I initially created an academic page to host a portfolio where I could show off my projects to potential employers. However, it quickly turned into a small passion for writing about the things I'm working on. Now, I enjoy maintaining this blog for several reasons:
 
-**First**, I often find myself looking for resources which dumb down complicated research topics or offer helpful career advice. I have benefitted substantially from other academic blogs on the internet, so I maintain this blog in an attempt to contribute to that community[^fn1].
+**First**, I have benefitted substantially from other academic blogs on the internet, so I maintain this blog in an attempt to contribute to the research community. [^fn1]
 
-**Second**, the act of writing down the things that I am currently working on in a polished format forces me to refine my understanding of the concepts, and also helps me to develop my writing skills. Furthermore, it gives me a chance to get feedback on my work, which would otherwise stay in (electronic) notebooks and never see the light of day[^fn2].
+**Second**, the act of writing down my thoughts forces me to refine my ideas, and gives me an opportunity to practice writing. [^fn2]
 
-**Third**, I treat this as a sort of "long-term memory," where I can go back and quickly reference the things that I've spent time learning. I often find myself re-learning the same subjects that I haven't seen in a while, so having things in this neat format helps to make that process more efficient.
+**Third**, putting my ideas in public gives me a chance to get feedback, which is incredibly valuable! [^fn3]
 
 With that being said, I hope you find some value in the things I write. 🙂
 
-[^fn1]: Some blogs which I've found to be valuable: 
-[Lil'Log](https://lilianweng.github.io/),
-[Distill](https://distill.pub/),
-[Terence Tao](https://terrytao.wordpress.com/career-advice/),
-[Matt Might](https://matt.might.net/),
-to name a few.
+[^fn1]: Some great blogs which I've found to be useful can be found [here](../resources/). Note this by no means an exhaustive list, as there are many great blogs out there!
 
-[^fn2]: I gratefully welcome feedback! Please feel free to reach out to me or leave your thoughts in the discussion section of my posts, whether it be errors or something else.
+[^fn2]: I write my posts without the use of LLMs, so please excuse any errors (but do let me know if you find any).
+
+[^fn3]: I gratefully welcome feedback---please feel free to reach out to me or leave your thoughts in the discussion section of my posts!
