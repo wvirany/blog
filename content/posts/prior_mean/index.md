@@ -285,6 +285,10 @@ Thanks for reading!
 
 3. Roman Garnett. Bayesian Optimization. Cambridge University Press, 2023.
 
+## Code
+
+Code to reproduce these results can be found at <a href=https://github.com/wvirany/molbo>github.com/wvirany/molbo</a>.
+
 ## Additional results
 
 Here I also include the results for UCB and Thompson sampling on the synthetic test functions. Similar trends can be observed when using EI.
