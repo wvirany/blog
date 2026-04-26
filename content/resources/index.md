@@ -4,6 +4,8 @@ draft: false
 comments: false
 ---
 
+[Austin Tripp](https://www.austintripp.ca/blog/)
+
 [Distill](https://distill.pub/)
 
 [Lil'Log](https://lilianweng.github.io/)
