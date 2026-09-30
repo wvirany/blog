@@ -4,10 +4,10 @@ function push_blog {
     git add . && git commit -m "Update public" && git push
 }
 
-# function rebuild_public {
-#     clean_public
-#     hugo --minify
-# }
+function rebuild_public {
+    clean_public
+    hugo --minify
+}
 
 # function clean_public {
 #     rm -r public/*
@@ -18,6 +18,7 @@ function push_public {
 }
 
 function all {
+    rebuild_public
     push_public
     cd ..
     push_blog
