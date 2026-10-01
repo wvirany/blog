@@ -9,9 +9,9 @@ function rebuild_public {
     hugo --minify
 }
 
-# function clean_public {
-#     rm -r public/*
-# }
+function clean_public {
+    rm -r public/*
+}
 
 function push_public {
     cd public && git add . && git commit -m "Site update" && git push
