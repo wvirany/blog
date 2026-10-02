@@ -949,7 +949,7 @@ $$
 
 The derivation for the sum of two Gaussian random variables is quite a bit more involved. For this, I'll perform the derivation for the univariate case, then generalize the result to multiple dimensions.
 
-To start, note that the density function for the sum of any two independent random variables is given by their convolution. That is, suppose $X$ and $Y$ are independent random variables, with $X \sim f_x(x)$, and $Y \sim f_Y(y)$. Let $Z = X + Y$. Then,
+To start, note that the density function for the sum of any two independent random variables is given by their convolution. That is, suppose $X$ and $Y$ are independent random variables, with $X \sim f_X(x)$, and $Y \sim f_Y(y)$. Let $Z = X + Y$. Then,
 
 $$
 f_Z(z) = \int_{-\infty}^{\infty} f_X(x)f_Y(z-x) dx.
